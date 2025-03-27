@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photobooth App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .panel {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            width: 100%;
+            max-width: 450px;
+        }
+        video {
+            transform: scaleX(-1);
+        }
+        video, #photo, #result {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        #photo, #result {
+            border: 1px dashed #ccc;
+            height: 300px;
+            object-fit: contain;
+            background-color: #eee;
+        }
+        .thumbnail {
+            max-width: 150px;
+            max-height: 100px;
+            margin: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #backgroundPreview {
+            max-width: 200px;
+            max-height: 150px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        .hidden {
+            display: none;
+        }
+        #countdown {
+            font-size: 72px;
+            font-weight: bold;
+            color: red;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <h1>Photobooth App</h1>
+    
+    <div class="container">
+        <div class="panel">
+            <h2>Step 1: Select a Background</h2>
+            <input type="file" id="backgroundInput" accept="image/*">
+            <div>
+                <img id="backgroundPreview" src="#" alt="Background preview" class="hidden">
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2>Step 2: Take Your Photo</h2>
+            <div id="countdown" class="hidden"></div>
+            <video id="video" autoplay playsinline></video>
+            <div>
+                <button id="startCameraBtn">Start Camera</button>
+                <button id="captureBtn" disabled>Take Photo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel">
+            <h2>Your Photo</h2>
+            <canvas id="photo"></canvas>
+        </div>
+        
+        <div class="panel">
+            <h2>Final Result</h2>
+            <img id="result" src="#" alt="Processed image">
+            <div>
+                <button id="processBtn" disabled>Process Photo</button>
+                <a id="downloadBtn" href="#" download="photobooth.png" class="hidden">
+                    <button>Download</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const video = document.getElementById('video');
+        const photo = document.getElementById('photo');
+        const photoContext = photo.getContext('2d');
+        const startCameraBtn = document.getElementById('startCameraBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const processBtn = document.getElementById('processBtn');
+        const resultImg = document.getElementById('result');
+        const backgroundInput = document.getElementById('backgroundInput');
+        const backgroundPreview = document.getElementById('backgroundPreview');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const countdownElement = document.getElementById('countdown');
+        
+        // Variables
+        let stream = null;
+        let backgroundFile = null;
+        
+        // Initialize canvas dimensions
+        photo.width = 400;
+        photo.height = 300;
+        
+        // Start camera
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
+                    audio: false 
+                });
+                video.srcObject = stream;
+                startCameraBtn.disabled = true;
+                captureBtn.disabled = false;
+                
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                alert("Could not access camera. Please make sure it's connected and you've given permission.");
+            }
+        });
+        
+        // Preview selected background
+        backgroundInput.addEventListener('change', () => {
+            if (backgroundInput.files && backgroundInput.files[0]) {
+                backgroundFile = backgroundInput.files[0];
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    backgroundPreview.src = e.target.result;
+                    backgroundPreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(backgroundFile);
+            }
+        });
+        
+        // Start countdown and take photo
+        captureBtn.addEventListener('click', () => {
+            if (!stream) return;
+            
+            // Start countdown
+            let count = 3;
+            countdownElement.textContent = count;
+            countdownElement.classList.remove('hidden');
+            
+            const countdownInterval = setInterval(() => {
+                count--;
+                
+                if (count <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.classList.add('hidden');
+                    
+                    // Take photo
+                    photo.width = video.videoWidth;
+                    photo.height = video.videoHeight;
+                    photoContext.drawImage(video, 0, 0, photo.width, photo.height);
+                    
+                    // Enable process button if background is selected
+                    if (backgroundFile) {
+                        processBtn.disabled = false;
+                    } else {
+                        alert("Please select a background image before processing");
+                    }
+                } else {
+                    countdownElement.textContent = count;
+                }
+            }, 1000);
+        });
+        
+        // Process photo with API
+        processBtn.addEventListener('click', async () => {
+            if (!backgroundFile) {
+                alert("Please select a background image");
+                return;
+            }
+            
+            try {
+                processBtn.disabled = true;
+                processBtn.textContent = "Processing...";
+                
+                // Create FormData to send files to API
+                const formData = new FormData();
+                
+                // Convert canvas to blob and add to form data
+                const photoBlob = await new Promise(resolve => {
+                    photo.toBlob(resolve, 'image/jpeg');
+                });
+                formData.append('subject', photoBlob, 'webcam.jpg');
+                
+                // Add background file
+                formData.append('new_background', backgroundFile);
+                
+                // Send to API
+                const response = await fetch('http://localhost:8000/replace-background', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                // Get result as blob and display
+                const resultBlob = await response.blob();
+                const resultUrl = URL.createObjectURL(resultBlob);
+                resultImg.src = resultUrl;
+                resultImg.classList.remove('hidden');
+                
+                // Enable download button
+                downloadBtn.href = resultUrl;
+                downloadBtn.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error("Error processing image:", error);
+                alert("Error processing image. Please try again.");
+            } finally {
+                processBtn.disabled = false;
+                processBtn.textContent = "Process Photo";
+            }
+        });
+    </script>
+</body>
+</html>
