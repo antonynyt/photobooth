@@ -236,7 +236,7 @@
                 formData.append('new_background', backgroundFile);
                 
                 // Send to API
-                const response = await fetch('http://localhost:8000/replace-background', {
+                const response = await fetch('http://127.0.0.1:8000/replace-background', {
                     method: 'POST',
                     body: formData,
                 });
