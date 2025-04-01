@@ -1,0 +1,14 @@
+:root {
+    --background-color: #A696E3;
+
+    --big-text: 1.5rem;
+    --small-text: 1rem;
+    --side-gap: 20px;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    :root {
+        --side-gap: 40px;
+        --big-text: 2.1rem;
+    }
+}
