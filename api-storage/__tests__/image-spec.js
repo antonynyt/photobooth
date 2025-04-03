@@ -21,13 +21,13 @@ describe('GET /api/images', function () {
     });
 });
 
-describe('five times POST /api/images and GET /api/images/:standID/last', function () {
+describe('five times POST /api/images and GET /api/images/:boothID/last', function () {
     it('should create five images and find the last created', async function () {
         for (let i = 1; i <= 5; i++) {
             await supertest(app)
                 .post('/api/images')
                 .send({
-                    standID: '67ed284a6d40e8822c129b1d',
+                    boothID: '67ed284a6d40e8822c129b1d',
                     img: {
                         data: 'data' + i,
                         contentType: 'image'
@@ -48,7 +48,7 @@ describe('POST /api/images', function () {
         const image = await supertest(app)
             .post('/api/images')
             .send({
-                standID: '67ed284a6d40e8822c129b1d',
+                boothID: '67ed284a6d40e8822c129b1d',
                 img: {
                     data: 'data',
                     contentType: 'image'
@@ -66,7 +66,7 @@ describe('POST /api/images and GET /api/images/:id', function () {
         const createdImage = await supertest(app)
             .post('/api/images')
             .send({
-                standID: '67ed284a6d40e8822c129b1d',
+                boothID: '67ed284a6d40e8822c129b1d',
                 img: {
                     data: 'data',
                     contentType: 'image'
@@ -90,7 +90,7 @@ describe('POST /api/images and DELETE /api/images/:id', function () {
         const image = await supertest(app)
             .post('/api/images')
             .send({
-                standID: '67ed284a6d40e8822c129b1d',
+                boothID: '67ed284a6d40e8822c129b1d',
                 img: {
                     data: 'data',
                     contentType: 'image'

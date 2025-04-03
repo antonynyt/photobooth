@@ -1,5 +1,5 @@
 # CRUD (toutes les routes nécessites une clé)
-## Stands
+## Booths
 Create
 Read -> depuis grand écran
 Update -> non
@@ -12,14 +12,14 @@ Update -> non
 Delete -> Nécessaire pour RGPD. Requête manuelle.
 
 # REST
-## Stands
-POST /api/stands -> Créée un nouveau stands et retourne l'id
+## Booths
+POST /api/booths -> Créée un nouveau booths et retourne l'id
 
 ## Images
 GET /api/images -> Toutes les images
 GET /api/images/:id -> Image avec l'id
 
-GET /api/stands/:standID/last -> Les dérnières images du stand
+GET /api/booths/:boothID/last -> Les dérnières images du booth
 
 POST /api/images -> Demande un corps de requête formé de : kioskID, image, clé. Ajoute et retourne l'id de l'image.
 

@@ -4,7 +4,7 @@ import logger from "morgan";
 import cors from "cors";
 
 import indexRouter from "./routes/index.js";
-import standsRouter from "./routes/stands.js";
+import boothsRouter from "./routes/booths.js";
 import imagesRouter from "./routes/images.js";
 
 import mongoose from 'mongoose';
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
-app.use("/api/stands", standsRouter);
+app.use("/api/booths", boothsRouter);
 app.use("/api/images", imagesRouter);
 
 // catch 404 and forward to error handler

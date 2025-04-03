@@ -22,8 +22,8 @@ router.get("/", (req, res, next) => {
   .catch(next)
 });
 
-router.get("/:standID/last", (req, res, next) => {
-  const query = Image.findOne({standID: req.params.standID}).sort({number: -1});
+router.get("/:boothID/last", (req, res, next) => {
+  const query = Image.findOne({boothID: req.params.boothID}).sort({number: -1});
   query.exec().then((image) => {
     if (!image) return res.status(404).send("No image was found");
     res.send(image);
@@ -31,9 +31,9 @@ router.get("/:standID/last", (req, res, next) => {
   .catch(next)
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", (req, res, next) => {
   const image = new Image(req.body);
-  if (!image.standID || !image.img) return res.status(400).send("Request body should contain standID and img");
+  if (!image.boothID || !image.img) return res.status(400).send("Request body should contain boothID and img");
   image.save()
   .then(savedImage => {
     return res.status(201).send(savedImage);
@@ -41,7 +41,7 @@ router.post("/", async (req, res, next) => {
   .catch(next);
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   const query = Image.findByIdAndDelete(req.params.id)
   query.exec().then((image) => {
     if (!image) return res.status(404).send("Image not found");

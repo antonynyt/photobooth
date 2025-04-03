@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const imageSchema = new Schema({
-    standID: {
+    boothID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref : 'Stand',
+        ref : 'Booth',
         required: true,
     },
     number: {
