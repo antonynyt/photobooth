@@ -38,8 +38,31 @@ describe('POST /api/images', function () {
         expect(image.body.img.contentType).toBe('image');
     });
 });
+        
+describe('POST /api/images and GET /api/images/:id', function () {
+    it('should create an image', async function () {
+        const createdImage = await supertest(app)
+            .post('/api/images')
+            .send({
+                standID: '67ed284a6d40e8822c129b1d',
+                img: {
+                    data: 'data',
+                    contentType: 'image'
+                }
+            })
+        expect(createdImage.status).toBe(201);
+        expect(createdImage.body.number).toBe(1);
+        expect(createdImage.body.img.data).toBe('data');
+        expect(createdImage.body.img.contentType).toBe('image');
+        const image = await supertest(app)
+            .get('/api/images/' + createdImage.body.id)
+        expect(image.status).toBe(200);
+        expect(image.body.number).toBe(1);
+        expect(image.body.img.data).toBe('data');
+        expect(image.body.img.contentType).toBe('image');
+    });
+});
 
-//create and destroy an image
 describe('POST /api/images and DELETE /api/images/:id', function () {
     it('should create and delete an image', async function () {
         const image = await supertest(app)
