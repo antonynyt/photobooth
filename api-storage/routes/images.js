@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 
 import Image from "../models/image.js";
 
@@ -19,6 +18,15 @@ router.get("/", (req, res, next) => {
   query.exec().then((images) => {
     if (!images) return res.status(404).send("No image was found");
     res.send(images);
+  })
+  .catch(next)
+});
+
+router.get("/:standID/last", (req, res, next) => {
+  const query = Image.findOne({standID: req.params.standID}).sort({number: -1});
+  query.exec().then((image) => {
+    if (!image) return res.status(404).send("No image was found");
+    res.send(image);
   })
   .catch(next)
 });

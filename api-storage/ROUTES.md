@@ -13,15 +13,13 @@ Delete -> Nécessaire pour RGPD. Requête manuelle.
 
 # REST
 ## Stands
-GET /api/stands/:id/last -> Les dérnières images du stands
-
 POST /api/stands -> Créée un nouveau stands et retourne l'id
-
-PATCH /api/stands/:id/last -> Change les dernières images du stand
 
 ## Images
 GET /api/images -> Toutes les images
 GET /api/images/:id -> Image avec l'id
+
+GET /api/stands/:standID/last -> Les dérnières images du stand
 
 POST /api/images -> Demande un corps de requête formé de : kioskID, image, clé. Ajoute et retourne l'id de l'image.
 

@@ -20,6 +20,28 @@ describe('GET /api/images', function () {
         expect(response.body.length).toBe(0);
     });
 });
+
+describe('five times POST /api/images and GET /api/images/:standID/last', function () {
+    it('should create five images and find the last created', async function () {
+        for (let i = 1; i <= 5; i++) {
+            await supertest(app)
+                .post('/api/images')
+                .send({
+                    standID: '67ed284a6d40e8822c129b1d',
+                    img: {
+                        data: 'data' + i,
+                        contentType: 'image'
+                    }
+                })
+        }
+        const image = await supertest(app)
+            .get('/api/images/67ed284a6d40e8822c129b1d/last')
+        expect(image.status).toBe(200);
+        expect(image.body.number).toBe(5);
+        expect(image.body.img.data).toBe('data5');
+        expect(image.body.img.contentType).toBe('image');
+    });
+});
         
 describe('POST /api/images', function () {
     it('should create an image', async function () {
