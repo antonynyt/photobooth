@@ -39,5 +39,31 @@ describe('POST /api/images', function () {
     });
 });
 
+//create and destroy an image
+describe('POST /api/images and DELETE /api/images/:id', function () {
+    it('should create and delete an image', async function () {
+        const image = await supertest(app)
+            .post('/api/images')
+            .send({
+                standID: '67ed284a6d40e8822c129b1d',
+                img: {
+                    data: 'data',
+                    contentType: 'image'
+                }
+            })
+        expect(image.status).toBe(201);
+        expect(image.body.number).toBe(1);
+        expect(image.body.img.data).toBe('data');
+        expect(image.body.img.contentType).toBe('image');
+
+        const deleteImage = await supertest(app)
+            .delete('/api/images/' + image.body.id)
+        expect(deleteImage.status).toBe(200);
+        expect(image.body.number).toBe(1);
+        expect(image.body.img.data).toBe('data');
+        expect(image.body.img.contentType).toBe('image');
+    });
+});
+
 // Disconnect from the database once the tests are done.
 afterAll(mongoose.disconnect);
