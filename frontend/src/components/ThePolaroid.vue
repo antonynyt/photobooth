@@ -47,14 +47,15 @@ const photos = computed(() => {
 <style scoped>
 .photo-container {
     background-color: var(--purple);
-    padding: 40px;
-    max-width: 500px;
+    padding: 4vw;
+    width: 50vw;
+    font-size: 2vw;
 }
 
 .photos-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 2vw;
 }
 
 .grid-item {
@@ -70,7 +71,7 @@ img {
 
 .slogan {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 4vw;
     color: #fff;
 }
     
