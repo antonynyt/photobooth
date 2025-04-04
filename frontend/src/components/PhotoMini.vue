@@ -51,7 +51,8 @@ const hasError = computed(() => {
 .result-image,
 .placeholder {
     width: 100%;
-    object-fit: contain;
+    aspect-ratio: 3/4;
+    object-fit: cover;
     border-radius: 4px;
 }
 

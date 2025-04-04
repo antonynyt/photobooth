@@ -121,7 +121,7 @@ async function processPhoto(photo) {
 
 .preview-container {
     position: relative;
-    max-width: 150px;
+    max-width: 100px;
 }
 
 button.home-button {
