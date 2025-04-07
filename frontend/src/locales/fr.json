@@ -1,10 +1,11 @@
 {
     "title": "Photomaton",
+    "langSelection": "Selectionnez votre langue pour continuer",
     "shot": {
         "left": "photos restantes"
     },
     "slogan": "Suis ta passion, façonne le jeu.",
-    "input": {
-        "placeholder": "Ask something..."
+    "form": {
+        "title": "Email"
     }
 }

@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
 
+const { locale } = useI18n();
 const router = useRouter();
-const selectedLanguage = ref('en');
+const selectedLanguage = ref(locale.value);
 
 const languages = [
     { code: 'en', name: 'EN' },
@@ -14,6 +16,8 @@ const languages = [
 
 function selectLanguage(lang) {
     selectedLanguage.value = lang;
+    locale.value = lang;
+
     continueToOptin();
 }
 
@@ -34,7 +38,7 @@ function continueToOptin() {
             <img src="../assets/polaroid-example.jpg" alt="">
         </div>
         <div class="language-selection">
-            <p>Please select your language to start</p>
+            <p>{{ $t('langSelection') }}</p>
             <div class="language-options">
                 <div v-for="lang in languages" :key="lang.code" class="language-option"
                     :class="{ selected: selectedLanguage === lang.code }" @click="selectLanguage(lang.code)">
@@ -65,8 +69,7 @@ function continueToOptin() {
 
 .polaroid-container img {
     transform: rotate(-2deg);
-    width: 100%;
-    max-width: 400px;
+    height: 50vh;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 1rem 0;
 }
