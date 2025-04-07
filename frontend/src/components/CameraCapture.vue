@@ -82,7 +82,7 @@ onUnmounted(() => {
         <video ref="video" autoplay playsinline></video>
         <div class="shutter-container">
             <div class="shots-left">
-                <p>{{ shotsleft }} shots left</p>
+                <p>{{ shotsleft }} {{ $t('shot.left') }}</p>
             </div>
             <TheShutterButton @click="takePhoto" :disabled="!cameraActive || countdownActive || shotsleft <= 0"/>
         </div>

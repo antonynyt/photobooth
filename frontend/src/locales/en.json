@@ -1,0 +1,10 @@
+{
+    "title": "Photobooth",
+    "shot": {
+        "left": "shots left"
+    },
+    "slogan": "Lead your passion, shape the game.",
+    "input": {
+        "placeholder": "Ask something..."
+    }
+}

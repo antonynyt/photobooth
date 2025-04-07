@@ -62,7 +62,7 @@ watch(
             </div>
         </div>
         <div class="slogan">
-            <h2>Lead your passion, shape the game.</h2>
+            <h2>{{ $t("slogan") }}</h2>
         </div>
     </div>
 </template>
