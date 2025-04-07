@@ -6,10 +6,18 @@ import ThePolaroid from '../components/ThePolaroid.vue';
 import { toJpeg } from 'html-to-image';
 import { PrintingPage, Repeat } from '@iconoir/vue';
 import { photos } from '../stores/photos';
+import TheCheckbox from '../components/TheCheckbox.vue';
 
 const router = useRouter();
+const printDisabled = ref(true);
+
+function handleOptin(event) {
+    const optinCheckbox = event.target;
+    printDisabled.value = !optinCheckbox.checked;
+}
 
 function handlePrint() {
+
     const polaroidElement = document.querySelector('#polaroid');
     const images = Array.from(polaroidElement.querySelectorAll('img'));
 
@@ -67,7 +75,12 @@ function handlePrint() {
             link.href = dataUrl;
             link.download = 'photo.jpg';
             link.click();
-            router.push('/email');
+            //add animation class
+            polaroidElement.classList.add('animated');
+            setTimeout(() => {
+                polaroidElement.classList.remove('animated');
+                router.push('/email');
+            }, 500);
         })
         .catch(error => {
             console.error('Error generating image:', error);
@@ -86,12 +99,18 @@ function startOver() {
             <ThePolaroid :photos="photos" />
         </div>
 
+        <div class="optin">
+            <!-- <input type="checkbox" name="optin" id="optin"> -->
+            <TheCheckbox @change="handleOptin" id="optin" name="optin" />
+            <label for="optin">{{ $t('optin') }}</label>
+        </div>
+
         <div class="action-buttons">
             <Button @click="startOver" class="start-over-button">
                 <Repeat width="30" height="30" />
             </Button>
 
-            <Button @click="handlePrint" class="print-button">
+            <Button @click="handlePrint" :disabled="printDisabled" class="print-button">
                 <PrintingPage width="30" height="30" />
             </Button>
 
@@ -153,4 +172,29 @@ function startOver() {
 .start-over-button svg {
     transform: scale(-1, -1);
 }
+
+.optin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 0.5rem;
+    line-height: 120%;
+    max-width: 500px;
+}
+
+.animated {
+    animation: print 0.5s ease-in forwards;
+}
+
+@keyframes print {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        transform: translateY(-100vh) scale(0.5);
+    }
+}
+
+
 </style>
