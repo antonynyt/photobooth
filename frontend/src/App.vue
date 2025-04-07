@@ -2,14 +2,5 @@
 </script>
 
 <template>
-    <div class="app-container">
-        <router-view />
-    </div>
+    <router-view />
 </template>
-
-<style>
-.app-container {
-    margin: 0 auto;
-    text-align: center;
-}
-</style>
