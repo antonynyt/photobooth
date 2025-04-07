@@ -2,6 +2,9 @@ import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
 import cors from "cors";
+import { bcryptCostFactor } from "../config.js";
+
+export const costFactor = parseInt(bcryptCostFactor);
 
 import indexRouter from "./routes/index.js";
 import boothsRouter from "./routes/booths.js";
@@ -15,6 +18,7 @@ const app = express();
 //api documentation
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
+import exp from "constants";
 
 //cors
 const corsOptions = {

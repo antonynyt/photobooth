@@ -13,7 +13,6 @@
     "debug": "^4.3.4",
     "express": "^4.21.0",
     "http-errors": "^2.0.0",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "morgan": "^1.10.0",
     "swagger-ui-express": "^5.0.1"
