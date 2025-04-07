@@ -22,13 +22,12 @@ const defaultPhotos = [
 const photos = computed(() => {
     if (!props.photos) return defaultPhotos;
 
-    return props.photos.map(photo => {
+    return props.photos.map((photo, index) => {
         return {
-            url: photo.processedUrl || photo.dataUrl
+            url: photo.processedUrl || photo.dataUrl,
+            id: index
         };
     });
-
-
 });
 
 </script>

@@ -48,10 +48,13 @@ async function processPhoto(photo) {
 
         // Get result as blob and update the photo
         const resultBlob = await response.blob();
+        
+        // Convert blob to data URL instead of creating a blob URL
+        const dataUrl = await blobToDataURL(resultBlob);
 
         // Create a new object reference to trigger reactivity
         const updatedPhoto = { ...photo };
-        updatedPhoto.processedUrl = URL.createObjectURL(resultBlob);
+        updatedPhoto.processedUrl = dataUrl; // Store data URL instead of blob URL
         updatedPhoto.processed = true;
         updatedPhoto.processing = false;
 
@@ -59,7 +62,7 @@ async function processPhoto(photo) {
         const index = capturedPhotos.value.indexOf(photo);
         if (index !== -1) {
             capturedPhotos.value[index] = updatedPhoto;
-            console.log('Photo processed successfully. New URL:', updatedPhoto.processedUrl);
+            console.log('Photo processed successfully');
         }
     } catch (error) {
         console.error("Error processing image:", error);
@@ -73,6 +76,16 @@ async function processPhoto(photo) {
             };
         }
     }
+}
+
+// Helper function to convert Blob to Data URL
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
 
 </script>
@@ -95,16 +108,12 @@ async function processPhoto(photo) {
 
 <style scoped>
 .camera-view {
-    width: 100%;
-    height: 100vh;
-}
-
-
-.container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 100svh;
 }
 
 .photos-preview {
@@ -113,7 +122,6 @@ async function processPhoto(photo) {
     flex-direction: column;
     justify-content: center;
     gap: 10px;
-    margin-top: 20px;
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -125,12 +133,12 @@ async function processPhoto(photo) {
 }
 
 button.home-button {
+    background: #fff;
     position: absolute;
     bottom: 20px;
     left: 20px;
-    padding: 15px 20px;
     aspect-ratio: 1;
-    border: 1px solid #000;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
 }
 
 .photo-counter {
@@ -143,30 +151,6 @@ button.home-button {
     border-radius: 15px;
     aspect-ratio: 1;
     font-size: 14px;
-}
-
-.results-container {
-    margin-top: 20px;
-}
-
-.photos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    margin: 20px 0;
-}
-
-.reset-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 </style>
