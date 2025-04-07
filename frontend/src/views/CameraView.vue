@@ -5,20 +5,20 @@ import CameraCapture from '../components/CameraCapture.vue';
 import Button from '../components/Button.vue';
 import { Home } from '@iconoir/vue';
 import PhotoMini from '../components/PhotoMini.vue';
+import { photos } from '../stores/photos';
 
 const router = useRouter();
-const capturedPhotos = ref([]);
 const backgroundFile = ref('/backgrounds/background-1.jpeg');
 
 async function handlePhotoCaptured(photoData) {
     photoData.processing = true;
-    capturedPhotos.value.push(photoData);
-    await processPhoto(capturedPhotos.value[capturedPhotos.value.length - 1]);
+    photos.value.push(photoData);
+    await processPhoto(photos.value[photos.value.length - 1]);
 
     // Once we have 3 photos, move to results
-    if (capturedPhotos.value.length >= 3) {
+    if (photos.value.length >= 3) {
         // Store photos in localStorage or state management solution
-        localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos.value));
+        // localStorage.setItem('photos', JSON.stringify(photos.value));
         router.push('/results');
     }
 }
@@ -59,17 +59,17 @@ async function processPhoto(photo) {
         updatedPhoto.processing = false;
 
         // Find and replace the photo in the array
-        const index = capturedPhotos.value.indexOf(photo);
+        const index = photos.value.indexOf(photo);
         if (index !== -1) {
-            capturedPhotos.value[index] = updatedPhoto;
+            photos.value[index] = updatedPhoto;
             console.log('Photo processed successfully');
         }
     } catch (error) {
         console.error("Error processing image:", error);
         // Reactive update with error state
-        const index = capturedPhotos.value.indexOf(photo);
+        const index = photos.value.indexOf(photo);
         if (index !== -1) {
-            capturedPhotos.value[index] = {
+            photos.value[index] = {
                 ...photo,
                 error: true,
                 processing: false
@@ -98,7 +98,7 @@ function blobToDataURL(blob) {
             <Home width="30" height="30" />
         </Button>
         <div class="photos-preview">
-            <div v-for="(photo, index) in capturedPhotos" :key="index" class="preview-container">
+            <div v-for="(photo, index) in photos" :key="index" class="preview-container">
                 <PhotoMini :photo="photo" />
                 <div class="photo-counter">{{ index + 1 }}</div>
             </div>

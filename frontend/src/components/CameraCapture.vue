@@ -91,15 +91,15 @@ onUnmounted(() => {
 
 <style scoped>
 video {
-    width: 100%;
-    height: 100vh;
+    width: 100vw;
+    height: 100%;
     object-fit: cover;
     transform: scaleX(-1);
 }
 
 .camera-container {
     position: relative;
-    height: 100vh;
+    height: 100svh;
     margin: 0;
     overflow: hidden;
 }
@@ -138,6 +138,7 @@ video {
     right: 0;
     z-index: 10;
     pointer-events: none;
+    font-family: "Monument", sans-serif;
 }
 
 .countdown div {

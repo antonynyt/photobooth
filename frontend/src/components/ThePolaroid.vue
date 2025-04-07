@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import SideTagLine from './SideTagLine.vue';
 import TheLogo from './TheLogo.vue';
 
@@ -29,6 +29,22 @@ const photos = computed(() => {
         };
     });
 });
+
+//to update the photos when the prop changes
+watch(
+    () => props.photos,
+    (newPhotos) => {
+        if (newPhotos) {
+            photos.value = newPhotos.map((photo, index) => {
+                return {
+                    url: photo.processedUrl || photo.dataUrl,
+                    id: index
+                };
+            });
+        }
+    },
+    { immediate: true }
+);
 
 </script>
 
@@ -60,6 +76,7 @@ const photos = computed(() => {
     font-size: clamp(0.4rem, 3vw, 17px);
     box-sizing: border-box;
     position: relative;
+    text-transform: uppercase;
 }
 
 .photos-grid {

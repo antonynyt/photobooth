@@ -5,22 +5,12 @@ import Button from '../components/Button.vue';
 import ThePolaroid from '../components/ThePolaroid.vue';
 import { toJpeg } from 'html-to-image';
 import { PrintingPage, Repeat } from '@iconoir/vue';
+import { photos } from '../stores/photos';
 
 const router = useRouter();
-const photos = ref([]);
-
-onMounted(() => {
-    // Get photos from localStorage
-    const storedPhotos = localStorage.getItem('capturedPhotos');
-    if (storedPhotos) {
-        photos.value = JSON.parse(storedPhotos);
-    }
-});
 
 function handlePrint() {
     const polaroidElement = document.querySelector('#polaroid');
-
-    // Wait for all images to load first
     const images = Array.from(polaroidElement.querySelectorAll('img'));
 
     // Pre-load and sanitize all images
@@ -75,7 +65,7 @@ function handlePrint() {
         .then(dataUrl => {
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'photolab_prints.jpg';
+            link.download = 'photo.jpg';
             link.click();
             router.push('/email');
         })
@@ -85,7 +75,7 @@ function handlePrint() {
 }
 
 function startOver() {
-    localStorage.removeItem('capturedPhotos');
+    photos.value = [];
     router.push('/camera');
 }
 </script>
