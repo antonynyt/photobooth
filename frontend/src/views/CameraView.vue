@@ -8,17 +8,19 @@ import PhotoMini from '../components/PhotoMini.vue';
 import { photos } from '../stores/photos';
 
 const router = useRouter();
-const backgroundFile = ref('/backgrounds/background-1.jpeg');
+
+function getBackgroundForPhotoIndex(index) {
+    const backgroundNumber = index + 1;
+    return `/backgrounds/background-${backgroundNumber}.jpg`;
+}
 
 async function handlePhotoCaptured(photoData) {
     photoData.processing = true;
+    photoData.backgroundFile = getBackgroundForPhotoIndex(photos.value.length);
     photos.value.push(photoData);
     await processPhoto(photos.value[photos.value.length - 1]);
 
-    // Once we have 3 photos, move to results
     if (photos.value.length >= 3) {
-        // Store photos in localStorage or state management solution
-        // localStorage.setItem('photos', JSON.stringify(photos.value));
         router.push('/results');
     }
 }
@@ -32,7 +34,7 @@ async function processPhoto(photo) {
         formData.append('subject', photo.blob, 'webcam.jpg');
 
         // Create a blob from the background file URL
-        const backgroundResponse = await fetch(backgroundFile.value);
+        const backgroundResponse = await fetch(photo.backgroundFile);
         const backgroundBlob = await backgroundResponse.blob();
         formData.append('new_background', backgroundBlob);
 
@@ -54,7 +56,7 @@ async function processPhoto(photo) {
 
         // Create a new object reference to trigger reactivity
         const updatedPhoto = { ...photo };
-        updatedPhoto.processedUrl = dataUrl; // Store data URL instead of blob URL
+        updatedPhoto.processedUrl = dataUrl;
         updatedPhoto.processed = true;
         updatedPhoto.processing = false;
 

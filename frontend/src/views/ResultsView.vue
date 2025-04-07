@@ -63,7 +63,7 @@ function handlePrint() {
             // Now generate the image with all image sources sanitized
             const options = {
                 quality: 1.0,
-                pixelRatio: 2, // Higher resolution for better quality
+                pixelRatio: 3, // Higher resolution for better quality
                 cacheBust: true,
                 skipFonts: false
             };
@@ -100,7 +100,6 @@ function startOver() {
         </div>
 
         <div class="optin">
-            <!-- <input type="checkbox" name="optin" id="optin"> -->
             <TheCheckbox @change="handleOptin" id="optin" name="optin" />
             <label for="optin">{{ $t('optin') }}</label>
         </div>
