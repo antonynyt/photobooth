@@ -13,7 +13,7 @@ import Button from './Button.vue';
     button {
         background-color: #000;
         color: #fff;
-        padding: 25px 100px;
+        padding: 1rem 8rem;
         border-radius: 200px;
         border: 1px solid #fff;
     }
