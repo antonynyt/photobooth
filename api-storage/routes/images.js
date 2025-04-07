@@ -41,13 +41,4 @@ router.post("/", (req, res, next) => {
   .catch(next);
 });
 
-router.delete("/:id", (req, res, next) => {
-  const query = Image.findByIdAndDelete(req.params.id)
-  query.exec().then((image) => {
-    if (!image) return res.status(404).send("Image not found");
-    return res.status(200).send(image);
-  })
-  .catch(next);
-});
-
 export default router;

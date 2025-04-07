@@ -9,7 +9,7 @@ Delete -> non
 Create -> depuis booth
 Read -> depuis landing page
 Update -> non
-Delete -> Nécessaire pour RGPD. Requête manuelle.
+Delete -> non
 
 # REST
 ## Booths
@@ -22,5 +22,3 @@ GET /api/images/:id -> Image avec l'id
 GET /api/booths/:boothID/last -> Les dérnières images du booth
 
 POST /api/images -> Demande un corps de requête formé de : kioskID, image, clé. Ajoute et retourne l'id de l'image.
-
-DELETE /api/images/:id -> Supprime une image
