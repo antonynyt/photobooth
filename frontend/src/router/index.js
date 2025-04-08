@@ -7,11 +7,6 @@ const routes = [
     component: () => import('../views/HomeView.vue')
   },
   {
-    path: '/optin',
-    name: 'optin',
-    component: () => import('../views/OptinView.vue')
-  },
-  {
     path: '/camera',
     name: 'camera',
     component: () => import('../views/CameraView.vue')
