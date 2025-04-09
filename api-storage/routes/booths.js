@@ -2,6 +2,8 @@ import express from "express";
 
 import Booth from "../models/booth.js";
 
+import { VerifyKey } from "../utils/verifyKey.js";
+
 const router = express.Router();
 
 router.post("/", VerifyKey(), (req, res, next) => {
