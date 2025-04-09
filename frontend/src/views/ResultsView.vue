@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Button from '../components/Button.vue';
 import ThePolaroid from '../components/ThePolaroid.vue';
@@ -17,16 +17,12 @@ function handleOptin(event) {
 }
 
 function handlePrint() {
-
     const polaroidElement = document.querySelector('#polaroid');
     const images = Array.from(polaroidElement.querySelectorAll('img'));
 
-    // Pre-load and sanitize all images
     Promise.all(images.map(img => {
-        // Skip if already a data URL (safe)
         if (img.src.startsWith('data:')) return Promise.resolve();
 
-        // Create a clean, CORS-free version of each image
         return new Promise((resolve, reject) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -35,37 +31,33 @@ function handlePrint() {
             imgObj.crossOrigin = 'anonymous';
 
             imgObj.onload = () => {
-                // Draw to canvas and replace original src with data URL
                 canvas.width = imgObj.width;
                 canvas.height = imgObj.height;
                 ctx.drawImage(imgObj, 0, 0);
 
                 try {
-                    // Replace the original image src with a safe data URL
                     img.src = canvas.toDataURL('image/jpeg');
                     resolve();
                 } catch (e) {
                     console.warn("Couldn't convert image:", e);
-                    resolve(); // Continue anyway
+                    resolve();
                 }
             };
 
             imgObj.onerror = () => {
                 console.warn("Couldn't load image:", img.src);
-                resolve(); // Continue anyway
+                resolve();
             };
 
-            // Start loading with crossOrigin set
             imgObj.src = img.src;
         });
     }))
         .then(() => {
-            // Now generate the image with all image sources sanitized
             const options = {
                 quality: 1.0,
-                pixelRatio: 3, // Higher resolution for better quality
+                pixelRatio: 3,
                 cacheBust: true,
-                skipFonts: false
+                skipFonts: true
             };
 
             return toJpeg(polaroidElement, options);
@@ -74,8 +66,11 @@ function handlePrint() {
             const link = document.createElement('a');
             link.href = dataUrl;
             link.download = 'photo.jpg';
+            
+            document.body.appendChild(link);
             link.click();
-            //add animation class
+            setTimeout(() => document.body.removeChild(link), 100);
+
             polaroidElement.classList.add('animated');
             setTimeout(() => {
                 polaroidElement.classList.remove('animated');
@@ -103,7 +98,7 @@ function startOver() {
             <TheCheckbox @change="handleOptin" id="optin" name="optin" />
             <label for="optin">{{ $t('optin') }}</label>
         </div>
-
+        
         <div class="action-buttons">
             <Button @click="startOver" class="start-over-button">
                 <Repeat width="30" height="30" />
@@ -194,6 +189,4 @@ function startOver() {
         transform: translateY(-100vh) scale(0.5);
     }
 }
-
-
 </style>
