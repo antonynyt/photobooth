@@ -1,6 +1,7 @@
 import express from "express";
 
 import Image from "../models/image.js";
+import { VerifyKey } from "../utils/verifyKey.js";
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ router.get("/:boothID/last", (req, res, next) => {
   .catch(next)
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", VerifyKey(), (req, res, next) => {
   const image = new Image(req.body);
   if (!image.boothID || !image.img) return res.status(400).send("Request body should contain boothID and img");
   image.save()

@@ -2,9 +2,9 @@ import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
 import cors from "cors";
-import { bcryptCostFactor } from "../config.js";
+import { key } from "../config.js";
 
-export const costFactor = parseInt(bcryptCostFactor);
+export const APIKey = key;
 
 import indexRouter from "./routes/index.js";
 import boothsRouter from "./routes/booths.js";

@@ -4,8 +4,8 @@ import Booth from "../models/booth.js";
 
 const router = express.Router();
 
-router.post("/", (req, res, next) => {
-  const booth = new Booth(req.body);
+router.post("/", VerifyKey(), (req, res, next) => {
+  const booth = new Booth();
   booth.save().then(savedBooth => {
     return res.status(201).send(savedBooth);
   })
