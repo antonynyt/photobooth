@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import CameraCapture from '../components/CameraCapture.vue';
 import Button from '../components/Button.vue';
@@ -39,7 +38,7 @@ async function processPhoto(photo) {
         formData.append('new_background', backgroundBlob);
 
         // Send to API
-        const response = await fetch('http://127.0.0.1:8000/replace-background', {
+        const response = await fetch('http://127.0.0.1:8001/replace-background', {
             method: 'POST',
             body: formData
         });
@@ -125,8 +124,8 @@ function blobToDataURL(blob) {
     justify-content: center;
     gap: 10px;
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 2rem;
+    right: 2rem;
 }
 
 .preview-container {
@@ -137,8 +136,8 @@ function blobToDataURL(blob) {
 button.home-button {
     background: #fff;
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 2rem;
+    left: 2rem;
     aspect-ratio: 1;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
 }

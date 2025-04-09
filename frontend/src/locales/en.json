@@ -5,8 +5,12 @@
         "left": "shots left"
     },
     "slogan": "Lead your passion, shape the game.",
-    "optin": "I agree to have my photo stored and publicly displayed on our website for marketing purposes.",
+    "optin": "I accept the terms and conditions and the privacy policy.",
     "form": {
-        "title": "Email"
+        "title": "Get my picture",
+        "subtitle": "Please enter your email address to receive your picture",
+        "getPictures": "Get my picture",
+        "error": "Veuillez enter une adresse email valide.",
+        "skip": "Skip step"
     }
 }

@@ -106,7 +106,7 @@ video {
 
 .shutter-container {
     position: absolute;
-    bottom: 20px;
+    bottom: 2rem;
     margin: 0 auto;
     display: flex;
     flex-direction: column;

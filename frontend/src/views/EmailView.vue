@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Button from '../components/Button.vue';
+import TheHeader from '../components/TheHeader.vue';
 
 const router = useRouter();
 const email = ref('');
@@ -39,37 +40,30 @@ async function handleSubmit() {
     }
 }
 
-function goBack() {
-    router.push('/results');
-}
 </script>
 
 <template>
     <div class="email-container">
-        <h1>Send Photos to Your Email</h1>
-
+        <TheHeader/>
         <div v-if="!submitSuccess" class="email-form">
-            <p>Enter your email address to receive your photos:</p>
+            <div class="form-header">
+                <h1>{{ $t('form.title') }}</h1>
+                <p>{{ $t('form.subtitle') }}</p>
+            </div>
 
             <div class="form-group">
-                <input type="email" v-model="email" placeholder="your@email.com" :disabled="isSubmitting" />
-                <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+                <input type="email" v-model="email" placeholder="zina@email.com" :disabled="isSubmitting" />
+                <p v-if="errorMessage" class="error-message">{{ $('form.error') }}</p>
             </div>
 
             <div class="form-actions">
-                <Button @click="handleSubmit" :disabled="isSubmitting" class="submit-button">
-                    {{ isSubmitting ? 'Sending...' : 'Send Photos' }}
-                </Button>
-
-                <Button @click="goBack" :disabled="isSubmitting" class="back-button">
-                    Back
-                </Button>
+                <Button @click="handleSubmit" :disabled="isSubmitting" class="submit-button">{{ $t('form.getPictures')}}</Button>
+                <a href="/">{{ $t('form.skip') }}</a>
             </div>
         </div>
 
         <div v-else class="success-message">
             <p>Your photos have been sent to {{ email }}!</p>
-            <p>You will be redirected to the home page shortly...</p>
         </div>
     </div>
 </template>
@@ -80,35 +74,61 @@ function goBack() {
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    height: 80vh;
-}
-
-h1 {
-    font-size: var(--big-text);
-    margin-bottom: 2rem;
+    box-sizing: border-box;
+    height: 100svh;
+    color: #fff;
 }
 
 .email-form {
     width: 100%;
     max-width: 500px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
+.form-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.form-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: "Monument", sans-serif;
 }
 
 input {
     width: 100%;
     padding: 1rem;
-    font-size: 1.2rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    margin-top: 0.5rem;
+    font-size: 1rem;
+    border: 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    font-family: 'Manrope';
 }
 
 input:focus {
     outline: none;
-    border-color: var(--purple);
+    outline: 2px solid var(--purple);
+}
+
+
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.form-actions a {
+    color: #fff;
+    font-weight: 400;
 }
 
 .error-message {
@@ -117,29 +137,20 @@ input:focus {
     margin-top: 0.5rem;
 }
 
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-}
-
 .submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Monument', sans-serif;
     background-color: var(--purple);
     color: white;
-    padding: 1rem 2rem;
+    padding: 1.5rem;
+    flex-grow: 1;
+    width: 100%;
 }
 
-.back-button {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    padding: 1rem 2rem;
-}
-
-.success-message {
-    text-align: center;
-    padding: 2rem;
-    background-color: #e6f7e6;
-    border-radius: 8px;
-    line-height: 1.6;
-}
 </style>

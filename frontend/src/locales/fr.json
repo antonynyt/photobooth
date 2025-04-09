@@ -5,8 +5,12 @@
         "left": "photos restantes"
     },
     "slogan": "Suis ta passion, façonne le jeu.",
-    "optin": "J'accepte que ma photo soit stockée et affichée publiquement sur le site web à des fins de marketing.",
+    "optin": "J'accepte les termes et conditions ainsi que la politique de confidentialité.",
     "form": {
-        "title": "Email"
+        "title": "Recevoir ma photo",
+        "subtitle": "Veuillez entrer votre adresse e-mail pour recevoir votre photo.",
+        "getPictures": "Recevoir ma photo",
+        "error": "Please enter a valid email address.",
+        "skip": "Passer l'étape"
     }
 }

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
+import TheHeader from '../components/TheHeader.vue';
 
 const { locale } = useI18n();
 const router = useRouter();
@@ -30,10 +31,7 @@ function continueToOptin() {
 
 <template>
     <div class="welcome-container">
-        <header>
-            <img src="../assets/whynotyou.svg" alt="Logo" class="logo">
-            <p>Lead your passion, shape the game.</p>
-        </header>
+        <TheHeader />
         <div class="polaroid-container">
             <img src="../assets/polaroid-example.jpg" alt="">
         </div>
@@ -72,25 +70,6 @@ function continueToOptin() {
     height: 50vh;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 1rem 0;
-}
-
-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-header img {
-    width: 100%;
-    max-width: 500px;
-}
-
-header p {
-    font-size: clamp(0.4rem, 3vw, 17px);
 }
 
 .language-selection {
