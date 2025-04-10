@@ -109,6 +109,7 @@ input {
     box-sizing: border-box;
 
     font-family: 'Manrope';
+    background-color: #fff;
 }
 
 input:focus {
