@@ -38,7 +38,7 @@ async function processPhoto(photo) {
         formData.append('new_background', backgroundBlob, 'background.jpg');
 
         // Send to API
-        const response = await fetch('http://127.0.0.1:8000/replace-background', {
+        const response = await fetch(import.meta.env.VITE_REMBG_API_URL, {
             method: 'POST',
             body: formData
         });
