@@ -10,16 +10,15 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
-# Load environment variables
-load_dotenv()
-
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Environment configurations with defaults
 REMBG_MODEL = os.getenv("REMBG_MODEL", "silueta")
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
-print(f"Configured CORS origins: {ALLOWED_ORIGINS}")
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 10 * 1024 * 1024))  # 10MB default
 ALLOWED_EXTENSIONS = {"jpg"}
 
@@ -37,12 +36,9 @@ app.add_middleware(
 )
 
 def validate_image(file: UploadFile):
-    # Check file extension
     ext = file.filename.split(".")[-1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail=f"File extension {ext} not allowed. Use {', '.join(ALLOWED_EXTENSIONS)}")
-    
-    # Check file size (done during read operation)
     return True
 
 @app.post("/replace-background")
@@ -53,7 +49,6 @@ async def replace_background(
     new_background: UploadFile = File(...),
 ):
     try:
-        # Validate files
         validate_image(subject)
         validate_image(new_background)
         
