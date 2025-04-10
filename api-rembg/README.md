@@ -2,10 +2,17 @@ https://cloudinary.com/demo/generative-background-replace
 
 # Install
 Create venv:
-0. python3 -m venv venv
-1. source api/venv/bin/activate
-2. pip install requirements.txt
-3. uvicorn app:app --reload
+1. cd api
+1. python3 -m venv venv
+2. `source api/venv/bin/activate` or Windows: `.\venv\Scripts\activate.bat`
+3. pip install -r requirements.txt
+4. uvicorn app:app --reload
+
+## docker
+
+1. cd api
+2. docker build -t photobooth-api .
+3. docker run --name photobooth-api -p 8001:8000 -d photobooth-api
 
 ## Test API
 `curl -X POST -F "subject=@user.jpg" -F "new_background=@background.jpeg" http://127.0.0.1:8000/replace-background --output result.png`
