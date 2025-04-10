@@ -30,15 +30,15 @@ async function processPhoto(photo) {
     try {
         // Create FormData to send files to API
         const formData = new FormData();
-        formData.append('subject', photo.blob, 'webcam.jpg');
-
+        
         // Create a blob from the background file URL
         const backgroundResponse = await fetch(photo.backgroundFile);
         const backgroundBlob = await backgroundResponse.blob();
-        formData.append('new_background', backgroundBlob);
+        formData.append('subject', photo.blob, 'webcam.jpg');
+        formData.append('new_background', backgroundBlob, 'background.jpg');
 
         // Send to API
-        const response = await fetch('http://127.0.0.1:8001/replace-background', {
+        const response = await fetch('http://127.0.0.1:8000/replace-background', {
             method: 'POST',
             body: formData
         });
