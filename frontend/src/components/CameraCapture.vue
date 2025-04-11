@@ -139,6 +139,7 @@ video {
     z-index: 10;
     pointer-events: none;
     font-family: "Monument", sans-serif;
+    font-weight: 700;
 }
 
 .countdown div {

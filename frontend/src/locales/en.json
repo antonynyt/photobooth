@@ -13,9 +13,9 @@
         "error": "Veuillez enter une adresse email valide.",
         "skip": "Skip step",
         "success": {
-            "title": "Picture sent!",
+            "title": "Picture sent",
             "subtitle": "Thank you for your smile!",
-            "message": "Ready to inspire the next generation of players? Take the first step towards a coaching license."
+            "message": "Ready to inspire the next generation of players? Take the first step towards the C license."
         }
     }
 }

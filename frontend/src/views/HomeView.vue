@@ -99,6 +99,7 @@ function continueToOptin() {
     transition: all 0.3s ease;
     aspect-ratio: 1;
     font-family: 'Monument', sans-serif;
+    font-weight: 400;
     width: 2rem;
     height: 2rem;
 }

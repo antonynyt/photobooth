@@ -13,9 +13,9 @@
         "error": "Please enter a valid email address.",
         "skip": "Passer l'étape",
         "success": {
-            "title": "Photo envoyée !",
+            "title": "Photo envoyée",
             "subtitle": "Merci pour votre sourire !",
-            "message": "Prêt.e à inspirer la prochaine génération de joueurs ? Faites le premier pas vers une licence de coach."
+            "message": "Prête à inspirer la prochaine génération de joueuses ? Faites le premier pas vers la licence C."
         }
     }
 }

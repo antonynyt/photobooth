@@ -2,31 +2,41 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <title>Photobooth</title>
-  <style type="text/css">
-    @font-face {
-      font-family: 'Switzer';
-      src: url('/fonts/manrope.woff2') format('woff2 supports variations'),
-        url('/fonts/manrope.woff2') format('woff2-variations');
-      font-weight: 100 1000;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Monument';
-      src: url('/fonts/ppmonument.woff2') format('woff2'),
-        url('/fonts/ppmonument.woff2') format('woff2');
-      font-display: auto;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Photobooth</title>
+    <style type="text/css">
+        @font-face {
+            font-family: 'Manrope';
+            src: url('/fonts/manrope.woff2') format('woff2 supports variations'),
+                url('/fonts/manrope.woff2') format('woff2-variations');
+            font-weight: 200 800;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Monument';
+            src: url('/fonts/ppmonument-regular.woff2') format('woff2'),
+                url('/fonts/ppmonument-regular.woff2') format('woff2');
+            font-display: auto;
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: 'Monument';
+            src: url('/fonts/ppmonument-black.woff2') format('woff2'),
+                url('/fonts/ppmonument-black.woff2') format('woff2');
+            font-display: auto;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
 <body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>

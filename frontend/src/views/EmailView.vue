@@ -104,6 +104,12 @@ async function handleSubmit(e) {
 </template>
 
 <style scoped>
+
+.submit-button, h1, p.slogan {
+    font-family: 'Monument', sans-serif;
+    font-weight: 700;
+}
+
 .email-container {
     display: flex;
     flex-direction: column;
@@ -161,14 +167,12 @@ async function handleSubmit(e) {
 .success-message h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
-    font-family: "Monument", sans-serif;
     line-height: 120%;
 }
 
 
 .success-message p {
     font-size: 1rem;
-    font-family: "Manrope", sans-serif;
     line-height: 120%;
 }
 
@@ -180,7 +184,6 @@ p.success-subtitle {
 
 p.slogan {
     font-size: 1rem;
-    font-family: "Monument", sans-serif;
     line-height: 120%;
     margin-top: 1rem;
 }
@@ -194,7 +197,6 @@ p.slogan {
 .form-header h1 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    font-family: "Monument", sans-serif;
 }
 
 input {
@@ -243,11 +245,12 @@ input:focus {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Monument', sans-serif;
     background-color: var(--purple);
     color: white;
     padding: 1.5rem;
     flex-grow: 1;
     width: 100%;
+    font-weight: 400;
 }
+
 </style>
