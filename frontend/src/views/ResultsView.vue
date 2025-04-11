@@ -5,8 +5,8 @@ import Button from '../components/Button.vue';
 import ThePolaroid from '../components/ThePolaroid.vue';
 import { toJpeg } from 'html-to-image';
 import { PrintingPage, Repeat } from '@iconoir/vue';
-import { photos } from '../stores/photos';
 import TheCheckbox from '../components/TheCheckbox.vue';
+import { generatedImage, photos } from '../stores/imageStore';
 
 const router = useRouter();
 const printDisabled = ref(true);
@@ -63,6 +63,9 @@ function handlePrint() {
             return toJpeg(polaroidElement, options);
         })
         .then(dataUrl => {
+            // Store the generated image in the shared store
+            generatedImage.value = dataUrl;
+            
             const link = document.createElement('a');
             link.href = dataUrl;
             link.download = 'photo.jpg';
@@ -73,7 +76,6 @@ function handlePrint() {
 
             polaroidElement.classList.add('animated');
             setTimeout(() => {
-                polaroidElement.classList.remove('animated');
                 router.push('/email');
             }, 500);
         })

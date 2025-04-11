@@ -10,7 +10,6 @@ const imageUrl = computed(() => {
     if (!props.photo) return null;
     // If processed URL exists, use it, otherwise use the data URL
     const url = props.photo.processedUrl || props.photo.dataUrl;
-    console.log('PhotoResult - Using URL:', url, props.photo.processed ? '(processed)' : '(original)');
     return url;
 });
 

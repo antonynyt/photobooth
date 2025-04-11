@@ -11,6 +11,11 @@
         "subtitle": "Please enter your email address to receive your picture",
         "getPictures": "Get my picture",
         "error": "Veuillez enter une adresse email valide.",
-        "skip": "Skip step"
+        "skip": "Skip step",
+        "success": {
+            "title": "Picture sent!",
+            "subtitle": "Thank you for your smile!",
+            "message": "Ready to inspire the next generation of players? Take the first step towards a coaching license."
+        }
     }
 }

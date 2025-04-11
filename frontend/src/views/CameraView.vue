@@ -4,7 +4,7 @@ import CameraCapture from '../components/CameraCapture.vue';
 import Button from '../components/Button.vue';
 import { Home } from '@iconoir/vue';
 import PhotoMini from '../components/PhotoMini.vue';
-import { photos } from '../stores/photos';
+import { photos } from '../stores/imageStore';
 
 const router = useRouter();
 
