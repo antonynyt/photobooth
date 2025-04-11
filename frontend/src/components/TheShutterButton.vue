@@ -32,11 +32,12 @@ defineProps({
 }
 
 button {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--yellow);
+    color: #000;
     padding: 1rem;
     width: 40vw;
     max-width: 300px;
+    min-width: 100px;
     border-radius: 200px;
     border: 1px solid #fff;
 }
@@ -52,8 +53,22 @@ button:disabled {
     color: #000;
     display: flex;
     padding: 10px 25px;
-    border-radius: 5px 5px 0 0;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
     border: 1px solid #000;
-    border-bottom: none;
+    text-align: center;
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    .shots-left {
+        padding: 10px 25px;
+        border-radius: 5px 5px 0 0;
+        border-bottom: none;
+        margin-bottom: 0;
+        position: static;
+    }
 }
 </style>

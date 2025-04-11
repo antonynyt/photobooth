@@ -1,15 +1,27 @@
 <script setup>
-defineProps({
+import { computed } from 'vue';
+const props = defineProps({
     value: {
         type: Number,
         required: true,
         default: 3
     }
 });
+
+const colors = [
+    "#6D55C8",
+    "#FFC13D",
+    "#5EBEE5"
+]
+
+const color = computed(() => {
+    const index = props.value % colors.length;
+    return colors[index];
+});
 </script>
 
 <template>
-    <div class="countdown">
+    <div class="countdown" :style="{ color: color }">
         <p>{{ value }}</p>
     </div>
 </template>
@@ -39,7 +51,6 @@ defineProps({
     width: 100px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 200px;
-    color: var(--purple);
     font-size: 50px;
 }
 </style>

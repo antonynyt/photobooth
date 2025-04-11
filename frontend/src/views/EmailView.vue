@@ -114,10 +114,16 @@ async function handleSubmit(e) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 2rem 1rem;
     box-sizing: border-box;
     height: 100svh;
     color: #fff;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    .email-container {
+        padding: 2rem;
+    }
 }
 
 .email-form {

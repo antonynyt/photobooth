@@ -142,6 +142,10 @@ onUnmounted(() => {
 }
 
 video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100vw;
     height: 100%;
     object-fit: cover;
@@ -149,7 +153,6 @@ video {
 }
 
 .camera-container {
-    position: relative;
     height: 100svh;
     margin: 0;
     overflow: hidden;
@@ -179,14 +182,19 @@ video {
 }
 
 nav {
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    right: 2rem;
+
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: end;
+    z-index: 1;
+    padding: 2rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.shutter-container {
+    flex-grow: 1;
 }
 
 .photos-preview {
@@ -206,6 +214,10 @@ button.home-button {
     background: #fff;
     aspect-ratio: 1;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+
+    position: absolute;
+    top: 2rem;
+    left: 1em;
 }
 
 .photo-counter {
@@ -218,5 +230,24 @@ button.home-button {
     border-radius: 15px;
     aspect-ratio: 1;
     font-size: 14px;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    nav {
+        padding: 2rem;
+        flex-direction: row;
+    }
+
+    button.home-button {
+        position: static;
+    }
+
+    .shutter-container {
+        flex-grow: 0;
+        position: absolute;
+        bottom: 1rem;
+        left: 0;
+        right: 0;
+    }
 }
 </style>

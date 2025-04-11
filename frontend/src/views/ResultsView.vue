@@ -120,9 +120,15 @@ function startOver() {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 2rem 1rem;
     box-sizing: border-box;
     height: 100svh;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    .results-container {
+        padding: 2rem;
+    }
 }
 
 .polaroid-container {
