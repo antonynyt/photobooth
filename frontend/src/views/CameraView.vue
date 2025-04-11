@@ -142,6 +142,7 @@ onUnmounted(() => {
     justify-content: center;
     box-sizing: border-box;
     height: 100svh;
+    position: relative;
 }
 
 video {
@@ -185,7 +186,6 @@ video {
 }
 
 nav {
-
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -230,7 +230,6 @@ button.home-button {
     color: white;
     padding: 0.5em 1em;
     border-radius: 15px;
-    aspect-ratio: 1;
     font-size: 14px;
 }
 

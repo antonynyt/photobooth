@@ -76,8 +76,13 @@ function handlePrint() {
 
             polaroidElement.classList.add('animated');
             setTimeout(() => {
-                router.push('/email');
-            }, 500);
+                try {
+                    router.push('/email');
+                } catch (e) {
+                    console.warn("Router navigation failed, using fallback", e);
+                    window.location.href = '/email';
+                }
+            }, 800);
         })
         .catch(error => {
             console.error('Error generating image:', error);

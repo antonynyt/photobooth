@@ -45,7 +45,6 @@ const hasError = computed(() => {
 .result-container {
     width: 100%;
     position: relative;
-    aspect-ratio: 3 / 4;
     height: 100%;
 }
 

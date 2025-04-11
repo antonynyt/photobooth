@@ -23,6 +23,10 @@ button:active {
     box-shadow: none;
 }
 
+button {
+    color: inherit;
+}
+
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
