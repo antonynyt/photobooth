@@ -43,7 +43,13 @@ router.post("/", VerifyKey(), (req, res, next) => {
   const image = new Image(req.body);
   if (!image.boothID || !image.img) return res.status(400).send("Request body should contain boothID and img");
   image.save()
-  .then(savedImage => {
+  .then(savedImage => {  
+    console.log("savedImage :", savedImage);
+    let binaryString = "";  
+    for (let i = 0; i < savedImage.img.data; i++) {
+      binaryString += String.fromCharCode(savedImage.img.data[i]);
+    }
+    console.log("binaryString :", binaryString);
     io.emit("newImage", savedImage); // Emit event when a new image is added
     return res.status(201).send(savedImage);
   })
