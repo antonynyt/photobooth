@@ -5,6 +5,9 @@
         "left": "photos restantes"
     },
     "slogan": "Suis ta passion, façonne le jeu.",
+    "result": {
+        "title": "Votre photo est prête"
+    }, 
     "optin": "J'accepte les termes et conditions ainsi que la politique de confidentialité.",
     "form": {
         "title": "Recevoir ma photo",

@@ -73,23 +73,25 @@ async function handleSubmit(e) {
     <div class="email-container">
         <TheHeader />
         <div v-if="!submitSuccess" class="email-form">
-            <div class="form-header">
-                <h1>{{ $t('form.title') }}</h1>
-                <p>{{ $t('form.subtitle') }}</p>
+            <div class="email-form-content">
+                <div class="form-header">
+                    <h1>{{ $t('form.title') }}</h1>
+                    <p>{{ $t('form.subtitle') }}</p>
+                </div>
+                <form @submit.prevent="handleSubmit">
+                    <div class="form-group">
+                        <input type="email" v-model="email" placeholder="zina@email.com" :disabled="isSubmitting" />
+                        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+                    </div>
+                    <div class="form-actions">
+                        <Button type="submit" :disabled="isSubmitting" class="submit-button">
+                            <span v-if="isSubmitting">Sending...</span>
+                            <span v-else>{{ $t('form.getPictures') }}</span>
+                        </Button>
+                        <a href="/">{{ $t('form.skip') }}</a>
+                    </div>
+                </form>
             </div>
-            <form @submit.prevent="handleSubmit">
-                <div class="form-group">
-                    <input type="email" v-model="email" placeholder="zina@email.com" :disabled="isSubmitting" />
-                    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-                </div>
-                <div class="form-actions">
-                    <Button type="submit" :disabled="isSubmitting" class="submit-button">
-                        <span v-if="isSubmitting">Sending...</span>
-                        <span v-else>{{ $t('form.getPictures') }}</span>
-                    </Button>
-                    <a href="/">{{ $t('form.skip') }}</a>
-                </div>
-            </form>
         </div>
 
         <div v-else class="success-container">
@@ -135,6 +137,27 @@ async function handleSubmit(e) {
     justify-content: center;
 }
 
+.email-form-content {
+    padding: 4rem 4rem;
+    background-color: var(--purple);
+    border-radius: 5px;
+    position: relative;
+}
+
+.email-form-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index: -1;
+    border-radius: 5px;
+    transform: rotate(-5deg);
+}
+
+
 .success-container {
     width: 100%;
     max-width: 500px;
@@ -146,11 +169,6 @@ async function handleSubmit(e) {
 }
 
 .success-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     padding: 4rem 4rem;
     background-color: var(--purple);
     border-radius: 5px;
@@ -167,13 +185,14 @@ async function handleSubmit(e) {
     background-color: #fff;
     z-index: -1;
     border-radius: 5px;
-    transform: rotate(-10deg);
+    transform: rotate(-5deg);
 }
 
 .success-message h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
     line-height: 120%;
+    color: var(--yellow);
 }
 
 
@@ -192,6 +211,7 @@ p.slogan {
     font-size: 1rem;
     line-height: 120%;
     margin-top: 1rem;
+    color: var(--yellow);
 }
 
 .form-header {
@@ -203,6 +223,7 @@ p.slogan {
 .form-header h1 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
+    color: var(--yellow);
 }
 
 input {
@@ -238,7 +259,7 @@ input:focus {
 }
 
 .error-message {
-    color: red;
+    color: var(--orange);
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
@@ -251,8 +272,8 @@ input:focus {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: var(--purple);
-    color: white;
+    background-color: var(--yellow);
+    color: #000;
     padding: 1.5rem;
     flex-grow: 1;
     width: 100%;

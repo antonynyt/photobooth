@@ -17,6 +17,7 @@ const { processPhoto } = usePhotoProcessing();
 
 const countdownActive = ref(false);
 const countdownValue = ref(3);
+const flashActive = ref(false);
 const shotsLeft = computed(() => 3 - photos.value.length);
 
 
@@ -40,7 +41,6 @@ function takePhoto() {
 }
 
 async function takePhotoSequence() {
-   
     while (shotsLeft.value > 0) {
         countdownActive.value = true;
         countdownValue.value = 3;
@@ -50,7 +50,12 @@ async function takePhotoSequence() {
                 countdownValue.value--;
 
                 if (countdownValue.value <= 0) {
+                    countdownActive.value = false;
                     clearInterval(countdownInterval);
+                    flashActive.value = true;
+                    setTimeout(() => {
+                        flashActive.value = false;
+                    }, 450);
                     resolve();
                 }
             }, 1000);
@@ -100,6 +105,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+    <div v-if="flashActive" class="camera-flash"></div>
     <div class="camera-view">
         <div class="camera-container">
             <div v-if="cameraError" class="camera-error">
@@ -226,6 +232,33 @@ button.home-button {
     border-radius: 15px;
     aspect-ratio: 1;
     font-size: 14px;
+}
+
+@keyframes flashAnimation {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    60% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.camera-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    opacity: 0.5;
+    z-index: 100;
+    pointer-events: none;
+    animation: flashAnimation 450ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .camera-flash {
+        animation: none;
+        opacity: 0;
+    }
 }
 
 @media only screen and (min-device-width: 768px) and (min-width: 768px) {
