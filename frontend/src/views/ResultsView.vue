@@ -5,8 +5,8 @@ import Button from '../components/Button.vue';
 import ThePolaroid from '../components/ThePolaroid.vue';
 import { toJpeg } from 'html-to-image';
 import { PrintingPage, Repeat } from '@iconoir/vue';
-import { photos } from '../stores/photos';
 import TheCheckbox from '../components/TheCheckbox.vue';
+import { generatedImage, photos } from '../stores/imageStore';
 
 const router = useRouter();
 const printDisabled = ref(true);
@@ -63,6 +63,9 @@ function handlePrint() {
             return toJpeg(polaroidElement, options);
         })
         .then(dataUrl => {
+            // Store the generated image in the shared store
+            generatedImage.value = dataUrl;
+            
             const link = document.createElement('a');
             link.href = dataUrl;
             link.download = 'photo.jpg';
@@ -73,7 +76,6 @@ function handlePrint() {
 
             polaroidElement.classList.add('animated');
             setTimeout(() => {
-                polaroidElement.classList.remove('animated');
                 router.push('/email');
             }, 500);
         })
@@ -90,6 +92,9 @@ function startOver() {
 
 <template>
     <div class="results-container">
+        <header>
+            <h1>{{ $t("result.title") }}</h1>
+        </header>
         <div class="polaroid-container">
             <ThePolaroid :photos="photos" />
         </div>
@@ -118,9 +123,49 @@ function startOver() {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 2rem 1rem;
     box-sizing: border-box;
     height: 100svh;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    .results-container {
+        padding: 2rem;
+    }
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-family: 'Monument', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-size: clamp(1.5rem, 2vw, 1.5rem);
+    margin: 0;
+    padding: 1rem 2rem;
+    text-align: center;
+    width: fit-content;
+    color: var(--yellow);
+    position: relative;
+    text-transform: uppercase;
+}
+
+h1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--purple);
+    z-index: -1;
+    border-radius: 5px;
+    transform: rotate(1deg);
 }
 
 .polaroid-container {
@@ -128,7 +173,6 @@ function startOver() {
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
     transform: rotate(-2deg);
 }
 
@@ -179,6 +223,12 @@ function startOver() {
 
 .animated {
     animation: print 0.5s ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animated {
+        animation: none;
+    }
 }
 
 @keyframes print {

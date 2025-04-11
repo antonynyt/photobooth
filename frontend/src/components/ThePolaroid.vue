@@ -1,51 +1,25 @@
 <script setup>
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import SideTagLine from './SideTagLine.vue';
 import TheLogo from './TheLogo.vue';
 
 const props = defineProps({
-    photos: Object
+    photos: {
+        type: Array,
+        required: true
+    }
 });
 
-const defaultPhotos = [
-    {
-        url: 'https://unsplash.it/400/300?image=1'
-    },
-    {
-        url: 'https://unsplash.it/400/300?image=1'
-    },
-    {
-        url: 'https://unsplash.it/400/300?image=1'
-    }
-];
-
-const photos = computed(() => {
-    if (!props.photos) return defaultPhotos;
-
+// This computed property will automatically update when props.photos changes
+const processedPhotos = computed(() => {
     return props.photos.map((photo, index) => {
         return {
             url: photo.processedUrl || photo.dataUrl,
-            id: index
+            id: index,
+            processing: photo.processing || false
         };
     });
 });
-
-//to update the photos when the prop changes
-watch(
-    () => props.photos,
-    (newPhotos) => {
-        if (newPhotos) {
-            photos.value = newPhotos.map((photo, index) => {
-                return {
-                    url: photo.processedUrl || photo.dataUrl,
-                    id: index
-                };
-            });
-        }
-    },
-    { immediate: true }
-);
-
 </script>
 
 <template>
@@ -53,8 +27,11 @@ watch(
         <SideTagLine />
         <SideTagLine class="right" />
         <div class="photos-grid">
-            <div v-for="(photo, index) in photos" :key="index" class="grid-item">
-                <img :src="photo.url" :key="photo.url" alt="Photo" class="result-image">
+            <div v-for="(photo, index) in processedPhotos" :key="photo.id" class="grid-item">
+                <img :src="photo.url" :alt="'Photo ' + (index + 1)" class="result-image">
+                <div v-if="photo.processing" class="processing-overlay">
+                    <div class="processing-gradient"></div>
+                </div>
             </div>
             <div class="logo-container">
                 <TheLogo class="logo-image" />
@@ -89,6 +66,7 @@ watch(
     aspect-ratio: 3/4;
     overflow: hidden;
     border-radius: 2px;
+    position: relative;
 }
 
 .logo-container {
@@ -120,5 +98,45 @@ img {
     text-align: center;
     margin-top: clamp(15px, 5vw, 30px);
     color: #fff;
+}
+
+
+.processing-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+.processing-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+                     rgba(255, 255, 255, 0) 0%,
+                     rgba(255, 255, 255, 0.4) 40%,
+                     rgba(255, 255, 255, 0.5) 50%,
+                     rgba(255, 255, 255, 0.4) 60%,
+                     rgba(255, 255, 255, 0) 100%);
+    background-size: 200% 100%;
+    animation: processing 3s linear infinite;
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+@keyframes processing {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
 </style>

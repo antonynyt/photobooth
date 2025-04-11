@@ -10,7 +10,6 @@ const imageUrl = computed(() => {
     if (!props.photo) return null;
     // If processed URL exists, use it, otherwise use the data URL
     const url = props.photo.processedUrl || props.photo.dataUrl;
-    console.log('PhotoResult - Using URL:', url, props.photo.processed ? '(processed)' : '(original)');
     return url;
 });
 
@@ -31,8 +30,8 @@ const hasError = computed(() => {
         <div v-else class="placeholder"></div>
 
         <!-- Processing overlay -->
-        <div v-if="isProcessing" class="processing-overlay">
-            <div class="processing-text">Processing...</div>
+        <div v-if="isProcessing"  class="processing-overlay">
+            <div class="processing-gradient"></div>
         </div>
 
         <!-- Error message -->
@@ -46,6 +45,8 @@ const hasError = computed(() => {
 .result-container {
     width: 100%;
     position: relative;
+    aspect-ratio: 3 / 4;
+    height: 100%;
 }
 
 .result-image,
@@ -57,9 +58,10 @@ const hasError = computed(() => {
 }
 
 .result-image {
-    border: 1px solid #000;
+    border: 2px solid var(--purple);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    box-sizing: border-box;
 }
 
 .placeholder {
@@ -82,7 +84,24 @@ const hasError = computed(() => {
     border-radius: 4px;
 }
 
-.processing-text,
+.processing-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+                         rgba(255, 255, 255, 0) 0%,
+                         rgba(255, 255, 255, 0.4) 40%,
+                         rgba(255, 255, 255, 0.5) 50%,
+                         rgba(255, 255, 255, 0.4) 60%,
+                         rgba(255, 255, 255, 0) 100%);
+    background-size: 200% 100%;
+    animation: processing 3s linear infinite;
+    pointer-events: none;
+    border-radius: 4px;
+}
+
 .error-text {
     color: white;
     font-size: 16px;
@@ -93,5 +112,15 @@ const hasError = computed(() => {
 
 .error-text {
     color: #ff6b6b;
+}
+
+@keyframes processing {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
 }
 </style>

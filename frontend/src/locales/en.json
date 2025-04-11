@@ -5,12 +5,20 @@
         "left": "shots left"
     },
     "slogan": "Lead your passion, shape the game.",
+    "result": {
+        "title": "Your picture is ready!"
+    },
     "optin": "I accept the terms and conditions and the privacy policy.",
     "form": {
         "title": "Get my picture",
         "subtitle": "Please enter your email address to receive your picture",
         "getPictures": "Get my picture",
         "error": "Veuillez enter une adresse email valide.",
-        "skip": "Skip step"
+        "skip": "Skip step",
+        "success": {
+            "title": "Picture sent",
+            "subtitle": "Thank you for your smile!",
+            "message": "Ready to inspire the next generation of players? Take the first step towards the C license."
+        }
     }
 }
