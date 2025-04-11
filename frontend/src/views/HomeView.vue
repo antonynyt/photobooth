@@ -186,9 +186,11 @@ h2::before {
     transition: all 0.3s ease;
     aspect-ratio: 1;
     font-family: 'Monument', sans-serif;
+    font-size: 1rem;
     font-weight: 400;
     width: 2rem;
     height: 2rem;
+    outline: 1px solid #ddd;
 }
 
 .language-option.selected {

@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Button from '../components/Button.vue';
 import TheHeader from '../components/TheHeader.vue';
-import { generatedImage } from '../stores/imageStore';
+import { generatedImage, photos } from '../stores/imageStore';
 
 const router = useRouter();
 const email = ref('');
@@ -57,7 +57,8 @@ async function handleSubmit(e) {
         // Automatically redirect to home after success message
         setTimeout(() => {
             router.push('/');
-        }, 3000);
+            photos.value = [];
+        }, 5000);
 
     } catch (error) {
         console.error('Error sending email:', error);
