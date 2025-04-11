@@ -15,6 +15,10 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/');
 
 const app = express();
 
+//increase the limit of the request body to 10mb to allow blobs
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
 //api documentation
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';

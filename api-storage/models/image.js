@@ -14,8 +14,8 @@ const imageSchema = new Schema({
         unique: true,
     },    
     img: { 
-        data: { type: String, required: true },
-        contentType: { type: String, required: true }
+        type: Buffer, 
+        required: true 
     }
 });
 
@@ -23,7 +23,7 @@ imageSchema.pre('save', function (next) {
     if (!this.isNew) return next(); // Skip if not a new document
 
     this.constructor.findOne().sort({ number: -1 }).then(lastImage => {
-        this.number = lastImage ? lastImage.number + 1 : 1; 
+        this.number = lastImage ? lastImage.number + 1 : 1;
         next();
     }).catch(next);
 });
