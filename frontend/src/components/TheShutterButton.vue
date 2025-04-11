@@ -39,7 +39,7 @@ button {
     max-width: 300px;
     min-width: 100px;
     border-radius: 200px;
-    border: 1px solid #fff;
+    border: 1px solid #ffda89;
 }
 
 button:disabled {

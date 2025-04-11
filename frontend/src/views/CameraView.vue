@@ -56,8 +56,6 @@ async function takePhotoSequence() {
             }, 1000);
         });
 
-        shotsLeft.value--;
-        
         const frame = captureFrame(video.value);
         if (frame) {
             const blob = await frame.toBlob();
@@ -106,7 +104,6 @@ onUnmounted(() => {
         <div class="camera-container">
             <div v-if="cameraError" class="camera-error">
                 <p>Camera error: {{ cameraError }}</p>
-                <button @click="startCamera(video)">Retry</button>
             </div>
             <video ref="video" autoplay playsinline></video>
             <TheCountdown v-if="countdownActive" :value="countdownValue" />
@@ -213,8 +210,7 @@ nav {
 button.home-button {
     background: #fff;
     aspect-ratio: 1;
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
-
+    outline: 1px solid #ddd;
     position: absolute;
     top: 2rem;
     left: 1em;
@@ -248,6 +244,7 @@ button.home-button {
         bottom: 1rem;
         left: 0;
         right: 0;
+        z-index: -1;
     }
 }
 </style>

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
 import TheHeader from '../components/TheHeader.vue';
+import Button from '../components/Button.vue';
 
 const { locale } = useI18n();
 const router = useRouter();
@@ -38,10 +39,10 @@ function continueToOptin() {
         <div class="language-selection">
             <p>{{ $t('langSelection') }}</p>
             <div class="language-options">
-                <div v-for="lang in languages" :key="lang.code" class="language-option"
+                <Button v-for="lang in languages" :key="lang.code" class="language-option"
                     :class="{ selected: selectedLanguage === lang.code }" @click="selectLanguage(lang.code)">
                     {{ lang.name }}
-                </div>
+                </Button>
             </div>
         </div>
     </div>
@@ -98,7 +99,7 @@ function continueToOptin() {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem;
     background-color: #fff;
     border-radius: 5px;
     cursor: pointer;
