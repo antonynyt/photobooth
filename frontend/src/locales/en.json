@@ -6,13 +6,14 @@
     },
     "slogan": "Lead your passion, shape the game.",
     "result": {
-        "title": "Your picture is ready!"
+        "title": "Your picture"
     },
     "optin": "I accept the terms and conditions and the privacy policy.",
     "form": {
         "title": "Get my picture",
         "subtitle": "Please enter your email address to receive your picture",
         "getPictures": "Get my picture",
+        "sending": "Sending...",
         "error": "Veuillez enter une adresse email valide.",
         "skip": "Skip step",
         "success": {

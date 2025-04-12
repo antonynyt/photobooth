@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Button from '../components/Button.vue';
 import ThePolaroid from '../components/ThePolaroid.vue';
-import { toJpeg } from 'html-to-image';
+import { domToJpeg } from 'modern-screenshot';
 import { PrintingPage, Repeat } from '@iconoir/vue';
 import TheCheckbox from '../components/TheCheckbox.vue';
 import { generatedImage, photos } from '../stores/imageStore';
@@ -23,20 +23,26 @@ function handlePrint() {
     Promise.all(images.map(img => {
         if (img.src.startsWith('data:')) return Promise.resolve();
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
             const imgObj = new Image();
             imgObj.crossOrigin = 'anonymous';
 
-            imgObj.onload = () => {
+            imgObj.onload = async () => {
                 canvas.width = imgObj.width;
                 canvas.height = imgObj.height;
                 ctx.drawImage(imgObj, 0, 0);
 
                 try {
-                    img.src = canvas.toDataURL('image/jpeg');
+                    const dataUrl = canvas.toDataURL('image/jpeg');
+                    // Wait for original image to load new data URL
+                    await new Promise((resolveLoad) => {
+                        img.onload = resolveLoad;
+                        img.onerror = resolveLoad;
+                        img.src = dataUrl;
+                    });
                     resolve();
                 } catch (e) {
                     console.warn("Couldn't convert image:", e);
@@ -54,35 +60,36 @@ function handlePrint() {
     }))
         .then(() => {
             const options = {
+                width: polaroidElement.offsetWidth,
+                height: polaroidElement.offsetHeight,
                 quality: 1.0,
-                pixelRatio: 3,
-                cacheBust: true,
-                skipFonts: true
+                scale: 2
             };
 
-            return toJpeg(polaroidElement, options);
+            return domToJpeg(polaroidElement, options);
         })
         .then(dataUrl => {
-            // Store the generated image in the shared store
             generatedImage.value = dataUrl;
             
+            // Trigger download
             const link = document.createElement('a');
             link.href = dataUrl;
             link.download = 'photo.jpg';
-            
             document.body.appendChild(link);
             link.click();
             setTimeout(() => document.body.removeChild(link), 100);
 
+            // Navigate after animation completes
             polaroidElement.classList.add('animated');
-            setTimeout(() => {
+            const onAnimationEnd = () => {
+                polaroidElement.removeEventListener('animationend', onAnimationEnd);
                 try {
                     router.push('/email');
                 } catch (e) {
-                    console.warn("Router navigation failed, using fallback", e);
                     window.location.href = '/email';
                 }
-            }, 800);
+            };
+            polaroidElement.addEventListener('animationend', onAnimationEnd);
         })
         .catch(error => {
             console.error('Error generating image:', error);
@@ -108,7 +115,7 @@ function startOver() {
             <TheCheckbox @change="handleOptin" id="optin" name="optin" />
             <label for="optin">{{ $t('optin') }}</label>
         </div>
-        
+
         <div class="action-buttons">
             <Button @click="startOver" class="start-over-button">
                 <Repeat width="30" height="30" />
@@ -179,9 +186,10 @@ h1::before {
     justify-content: center;
     align-items: center;
     transform: rotate(-2deg);
+    width: 70%;
 }
 
-.polaroid-container > div {
+.polaroid-container>div {
     box-shadow: -2px 3px 9px 0px rgba(0, 0, 0, 0.25);
 }
 
@@ -240,6 +248,7 @@ h1::before {
     0% {
         transform: translateY(0) scale(1);
     }
+
     100% {
         transform: translateY(-100vh) scale(0.5);
     }

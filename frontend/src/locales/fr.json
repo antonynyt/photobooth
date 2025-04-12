@@ -6,13 +6,14 @@
     },
     "slogan": "Suis ta passion, façonne le jeu.",
     "result": {
-        "title": "Votre photo est prête"
+        "title": "Votre photo"
     }, 
     "optin": "J'accepte les termes et conditions ainsi que la politique de confidentialité.",
     "form": {
         "title": "Recevoir ma photo",
         "subtitle": "Veuillez entrer votre adresse e-mail pour recevoir votre photo.",
         "getPictures": "Recevoir ma photo",
+        "sending": "Envoi...",
         "error": "Please enter a valid email address.",
         "skip": "Passer l'étape",
         "success": {

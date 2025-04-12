@@ -81,12 +81,12 @@ async function handleSubmit(e) {
                 </div>
                 <form @submit.prevent="handleSubmit">
                     <div class="form-group">
-                        <input type="email" v-model="email" placeholder="zina@email.com" :disabled="isSubmitting" />
+                        <input type="email" id="email" v-model="email" placeholder="zina@email.com" :disabled="isSubmitting" />
                         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
                     </div>
                     <div class="form-actions">
                         <Button type="submit" :disabled="isSubmitting" class="submit-button">
-                            <span v-if="isSubmitting">Sending...</span>
+                            <span v-if="isSubmitting">{{ $t('form.sending') }}</span>
                             <span v-else>{{ $t('form.getPictures') }}</span>
                         </Button>
                         <a href="/">{{ $t('form.skip') }}</a>
@@ -139,25 +139,11 @@ async function handleSubmit(e) {
 }
 
 .email-form-content {
-    padding: 4rem 4rem;
+    padding: 4rem 1rem;
     background-color: var(--purple);
     border-radius: 5px;
     position: relative;
 }
-
-.email-form-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    z-index: -1;
-    border-radius: 5px;
-    transform: rotate(-5deg);
-}
-
 
 .success-container {
     width: 100%;
@@ -170,23 +156,10 @@ async function handleSubmit(e) {
 }
 
 .success-message {
-    padding: 4rem 4rem;
+    padding: 4rem 1rem;
     background-color: var(--purple);
     border-radius: 5px;
     position: relative;
-}
-
-.success-message::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    z-index: -1;
-    border-radius: 5px;
-    transform: rotate(-5deg);
 }
 
 .success-message h1 {
@@ -195,7 +168,6 @@ async function handleSubmit(e) {
     line-height: 120%;
     color: var(--yellow);
 }
-
 
 .success-message p {
     font-size: 1rem;
@@ -279,6 +251,42 @@ input:focus {
     flex-grow: 1;
     width: 100%;
     font-weight: 400;
+    font-size: .8rem;
+}
+
+@media only screen and (min-device-width: 768px) and (min-width: 768px) {
+    .email-form-content {
+        padding: 4rem;
+    }
+    .email-form-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #fff;
+        z-index: -1;
+        border-radius: 5px;
+        transform: rotate(-5deg);
+    }
+
+    .success-message {
+        padding: 4rem;
+    }
+
+    .success-message::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #fff;
+        z-index: -1;
+        border-radius: 5px;
+        transform: rotate(-5deg);
+    }
 }
 
 </style>
