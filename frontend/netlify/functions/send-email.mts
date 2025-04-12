@@ -1,9 +1,18 @@
 import { Handler } from "@netlify/functions";
-import SendGrid from "@sendgrid/mail";
+import Mailgun from "mailgun.js";
+import formData from "form-data";
 import { parse } from "lambda-multipart-parser";
+import { getEmailTemplate } from "./email-template";
 
-// Configure SendGrid
-SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+// Configure Mailgun with updated form-data
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({
+    username: "api",
+    key: process.env.MAILGUN_API_KEY,
+    url: "https://api.eu.mailgun.net"
+});
+
+const domain = process.env.MAILGUN_DOMAIN;
 
 export const handler: Handler = async (event) => {
     // Handle CORS preflight request
@@ -26,10 +35,8 @@ export const handler: Handler = async (event) => {
     }
 
     try {
-        // Parse multipart/form-data
         const { email, files } = await parse(event);
 
-        // Validate form data
         if (!email || !files || files.length === 0) {
             return {
                 statusCode: 400,
@@ -40,26 +47,31 @@ export const handler: Handler = async (event) => {
 
         const [imageFile] = files;
 
-        // Prepare email message
-        const msg = {
+        // Ensure content is a Buffer
+        let contentBuffer: Buffer;
+        if (Buffer.isBuffer(imageFile.content)) {
+            contentBuffer = imageFile.content;
+        } else {
+            contentBuffer = Buffer.from(imageFile.content as any);
+        }
+
+        const styledHtml = getEmailTemplate();
+
+        const messageData = {
+            from: `WhyNotYou <${process.env.MAILGUN_SENDER}>`,
             to: email,
-            from: process.env.SENDGRID_VERIFIED_SENDER, // Must be verified
-            subject: "#WHYNOTYOU: Your photo",
-            text: "Thank you for your submission.",
-            html: `<p>Thank you for your submission.</p><p>Here is your photo:</p><img src="cid:photo" alt="Your photo" />`,
-            attachments: [
+            subject: "#WHYNOTYOU: Ready to lead the game?",
+            html: styledHtml,
+            inline: [
                 {
-                    content: imageFile.content.toString("base64"),
+                    data: contentBuffer,
                     filename: "photobooth.jpg",
-                    type: "image/jpeg",
-                    disposition: "inline",
-                    content_id: "photo",
+                    contentType: imageFile.contentType || "image/jpeg",
                 },
             ],
         };
 
-        // Send email
-        await SendGrid.send(msg);
+        await mg.messages.create(domain, messageData);
 
         return {
             statusCode: 200,
