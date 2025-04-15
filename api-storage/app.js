@@ -2,7 +2,7 @@ import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
 import cors from "cors";
-import { key } from "../config.js";
+import { key } from "./config.js";
 
 export const APIKey = key;
 
