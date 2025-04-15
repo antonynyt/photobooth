@@ -19,11 +19,6 @@ const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
-//api documentation
-import swaggerUi from 'swagger-ui-express';
-import fs from 'fs';
-import exp from "constants";
-
 //cors
 const corsOptions = {
   origin: 'https://whynotyou-frontend.onrender.com',

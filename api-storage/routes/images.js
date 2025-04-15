@@ -10,7 +10,7 @@ const app = express();
 const server = createServer(app); // Wrap app with HTTP server
 const io = new Server(server, { cors: { origin: "*" } });
 
-server.listen(4000, () => console.log("Server running on port 4000"));
+server.listen(4000, () => console.log("Websocket running on port 4000"));
 
 router.get("/:id", (req, res, next) => {
   const query = Image.findById(req.params.id)
