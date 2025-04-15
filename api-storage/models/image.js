@@ -14,7 +14,7 @@ const imageSchema = new Schema({
         unique: true,
     },    
     img: { 
-        type: Buffer, 
+        type: String, 
         required: true 
     }
 });

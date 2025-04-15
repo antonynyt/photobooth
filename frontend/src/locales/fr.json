@@ -1,0 +1,25 @@
+{
+    "title": "Photomaton",
+    "langSelection": "Selectionnez votre langue pour continuer",
+    "shot": {
+        "left": "photos restantes"
+    },
+    "slogan": "Suis ta passion, façonne le jeu.",
+    "result": {
+        "title": "Votre photo"
+    }, 
+    "optin": "J'accepte les termes et conditions ainsi que la politique de confidentialité.",
+    "form": {
+        "title": "Recevoir ma photo",
+        "subtitle": "Veuillez entrer votre adresse e-mail pour recevoir votre photo.",
+        "getPictures": "Recevoir ma photo",
+        "sending": "Envoi...",
+        "error": "Please enter a valid email address.",
+        "skip": "Passer l'étape",
+        "success": {
+            "title": "Photo envoyée",
+            "subtitle": "Merci pour votre sourire !",
+            "message": "Prête à inspirer la prochaine génération de joueuses ? Faites le premier pas vers la licence C."
+        }
+    }
+}
