@@ -6,7 +6,11 @@ This is the main frontend for the Photobooth project.
 
 Ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (LTS version recommended)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [npm](https://www.npmjs.com/)
+- [Netlify CLI](https://docs.netlify.com/cli/get-started/)
+```bash
+npm install netlify-cli -g
+```
 
 ## Installation
 
@@ -31,11 +35,11 @@ npm run dev
 # or
 bun run dev
 # or
-netlify dev #this allow us to test the serverless functions
+netlify dev #this allow us to test the serverless functions but need to be configured
 ```
 
 The application will be available at `http://localhost:5173`.
-
+or at `http://localhost:8888` with Netlify dev.
 
 
 ## Building for Production
