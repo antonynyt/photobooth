@@ -3,3 +3,6 @@ venv
 .DS_Store
 api/*.png
 api/*.jpg
+# Local Netlify folder
+.netlify
+node_modules

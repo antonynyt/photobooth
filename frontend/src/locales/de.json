@@ -1,0 +1,27 @@
+{
+    "title": "Fotokabine",
+    "langSelection": "Wählen Sie Ihre Sprache",
+    "shot": {
+        "left": "verbleibende Fotos"
+    },
+    "slogan": "Folge deiner Leidenschaft, forme das Spiel.",
+    "result": {
+        "title": "Ihr Foto",
+        "cta": "Drucken & der Bewegung beitreten"
+    }, 
+    "optinTitle": "Treten Sie der Bewegung bei!",
+    "optin": "Ich stimme zu, dass mein Foto dem öffentlichen Mosaik hinzugefügt wird, und akzeptiere die Allgemeinen Geschäftsbedingungen.",
+    "form": {
+        "title": "Mein Foto erhalten",
+        "subtitle": "Bitte geben Sie Ihre E-Mail-Adresse ein, um Ihr Foto zu erhalten.",
+        "getPictures": "Mein Foto erhalten",
+        "sending": "Senden...",
+        "error": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+        "skip": "Schritt überspringen",
+        "success": {
+            "title": "Foto gesendet",
+            "subtitle": "Danke für Ihr Lächeln!",
+            "message": "Bereit, die nächste Generation von Spielerinnen zu inspirieren? Machen Sie den ersten Schritt zur C-Lizenz."
+        }
+    }
+}

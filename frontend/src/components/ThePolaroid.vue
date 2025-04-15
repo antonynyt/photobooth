@@ -50,7 +50,7 @@ const processedPhotos = computed(() => {
     padding: clamp(15px, 5vw, 35px);
     width: clamp(100%, 450px, 450px);
     max-width: 450px;
-    font-size: clamp(0.4rem, 3vw, 17px);
+    font-size: clamp(0.2rem, 2vw, 12px);
     box-sizing: border-box;
     position: relative;
     text-transform: uppercase;
@@ -98,6 +98,8 @@ img {
     text-align: center;
     margin-top: clamp(15px, 5vw, 30px);
     color: #fff;
+    font-family: 'Monument', sans-serif;
+    font-weight: 700;
 }
 
 

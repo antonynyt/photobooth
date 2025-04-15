@@ -1,14 +1,16 @@
 {
     "title": "Photomaton",
-    "langSelection": "Selectionnez votre langue pour continuer",
+    "langSelection": "Selectionnez votre langue",
     "shot": {
         "left": "photos restantes"
     },
     "slogan": "Suis ta passion, façonne le jeu.",
     "result": {
-        "title": "Votre photo"
+        "title": "Votre photo",
+        "cta": "Imprimer & rejoindre le mouvement"
     }, 
-    "optin": "J'accepte les termes et conditions ainsi que la politique de confidentialité.",
+    "optinTitle": "Rejoins le mouvement !",
+    "optin": "J'accepte que ma photo soit ajoutée à la mosaïque publique et j'accepte les Conditions Générales.",
     "form": {
         "title": "Recevoir ma photo",
         "subtitle": "Veuillez entrer votre adresse e-mail pour recevoir votre photo.",
