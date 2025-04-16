@@ -124,7 +124,7 @@ const fetchImages = async () => {
 };
 
 onMounted(() => {
-  fetchImages();
+  fetchImages()
   .then(() => {
     photos.value.forEach(photo => {
       displayPhoto(photo);
