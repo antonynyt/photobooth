@@ -1,5 +1,8 @@
 {
-  "name": "photobooth",
+  "name": "why_not_you",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
   "scripts": {
     "start": "node ./bin/start",
     "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose --runInBand"
