@@ -29,18 +29,19 @@ const displayPhoto = (photo) => {
     queueSize.value--;
     let randIndex = Math.floor(Math.random()*(imageHeight.value/pixelHeight.value*imageWidth.value/pixelWidth.value));
     // Increments the value of randIndex until it finds an empty spot in the array
-    findEmptyIndex(photo, randIndex);
-    lastImage.value = randIndex;
-    FullIndexes.value.push([photo.number, randIndex]);
-    setTimeout(() => {
-      lastImage.value = null;
-    }, 3000);
+    if (!findEmptyIndex(photo, randIndex)){
+      lastImage.value = randIndex;
+      FullIndexes.value.push([photo.number, randIndex]);
+      setTimeout(() => {
+        lastImage.value = null;
+      }, 3000);
+    }
   }else{
     // wait for the queue to be empty
     queueSize.value++;
     setTimeout(() => {
       displayPhoto(photo);
-    }, 6500*queueSize.value);
+    }, 5500*queueSize.value);
   }
 };
 
@@ -177,7 +178,7 @@ onBeforeUnmount(() => {
 
   img.user-img:not(.last-image) {
     z-index: 1;
-    transition: all 3s ease-in-out;
+    transition: all 2s ease-in-out;
   }
 
   img.image-blocker {
