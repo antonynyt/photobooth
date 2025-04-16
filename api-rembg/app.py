@@ -2,13 +2,17 @@ from fastapi import FastAPI, File, UploadFile, Request, HTTPException
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from rembg import new_session, remove
-from PIL import Image
+from PIL import Image, ImageFile
 import io
 import os
+import asyncio
 from dotenv import load_dotenv
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+
+# Allow PIL to load truncated images (for security checks)
+ImageFile.LOAD_TRUNCATED_IMAGES = False
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -20,7 +24,9 @@ load_dotenv()
 REMBG_MODEL = os.getenv("REMBG_MODEL", "silueta")
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 10 * 1024 * 1024))  # 10MB default
-ALLOWED_EXTENSIONS = {"jpg"}
+ALLOWED_EXTENSIONS = {"jpg", "jpeg"}
+MAX_IMAGE_WIDTH = int(os.getenv("MAX_IMAGE_WIDTH", 5000))
+MAX_IMAGE_HEIGHT = int(os.getenv("MAX_IMAGE_HEIGHT", 5000))
 
 app = FastAPI()
 app.state.limiter = limiter
@@ -35,11 +41,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def validate_image(file: UploadFile):
+def validate_image(file: UploadFile, content: bytes):
+    # Validate file extension
     ext = file.filename.split(".")[-1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail=f"File extension {ext} not allowed. Use {', '.join(ALLOWED_EXTENSIONS)}")
+    
+    # Validate magic number for JPEG
+    if not content.startswith(b'\xff\xd8'):
+        raise HTTPException(status_code=400, detail="Invalid image format. Only JPEG is allowed.")
     return True
+
+def process_images(subject_image: Image.Image, bg_image: Image.Image, model_name: str):
+    session = new_session(model_name)
+    subject_nobg = remove(subject_image, session=session)
+    
+    # Resize background to match subject size
+    bg_image = bg_image.resize(subject_nobg.size)
+    
+    # Composite images
+    final_image = Image.alpha_composite(
+        bg_image.convert("RGBA"),
+        subject_nobg
+    )
+    return final_image
 
 @app.post("/replace-background")
 @limiter.limit("5/minute")
@@ -49,43 +74,78 @@ async def replace_background(
     new_background: UploadFile = File(...),
 ):
     try:
-        validate_image(subject)
-        validate_image(new_background)
-        
-        # Read images with size limit
+        # Read and validate both files first
         subject_data = await subject.read(MAX_FILE_SIZE + 1)
         if len(subject_data) > MAX_FILE_SIZE:
-            raise HTTPException(status_code=413, detail=f"Subject file too large (max {MAX_FILE_SIZE // (1024*1024)}MB)")
-            
+            raise HTTPException(status_code=413, detail="Subject file too large")
+        
         bg_data = await new_background.read(MAX_FILE_SIZE + 1)
         if len(bg_data) > MAX_FILE_SIZE:
-            raise HTTPException(status_code=413, detail=f"Background file too large (max {MAX_FILE_SIZE // (1024*1024)}MB)")
-        
-        # Process images
+            raise HTTPException(status_code=413, detail="Background file too large")
+
+        validate_image(subject, subject_data)
+        validate_image(new_background, bg_data)
+
+        # Open images and validate content
         subject_image = Image.open(io.BytesIO(subject_data))
         bg_image = Image.open(io.BytesIO(bg_data))
+
+        # Verify image formats
+        if subject_image.format != "JPEG":
+            raise HTTPException(status_code=400, detail="Subject must be a valid JPEG image")
+        if bg_image.format != "JPEG":
+            raise HTTPException(status_code=400, detail="Background must be a valid JPEG image")
+
+        # Validate image dimensions
+        if (subject_image.width > MAX_IMAGE_WIDTH or 
+            subject_image.height > MAX_IMAGE_HEIGHT):
+            raise HTTPException(status_code=400, detail="Subject image dimensions exceed maximum allowed")
         
-        session = new_session(REMBG_MODEL)
-        subject_nobg = remove(subject_image, session=session)
+        if (bg_image.width > MAX_IMAGE_WIDTH or 
+            bg_image.height > MAX_IMAGE_HEIGHT):
+            raise HTTPException(status_code=400, detail="Background image dimensions exceed maximum allowed")
+
+        # Process images in thread pool executor
+        final_image = await asyncio.to_thread(
+            process_images,
+            subject_image,
+            bg_image,
+            REMBG_MODEL
+        )
+
+        # Crop image to 3:4 aspect ratio
+        width, height = final_image.size
+        target_ratio = 3 / 4
         
-        bg_image = bg_image.resize(subject_nobg.size)
-        final_image = Image.alpha_composite(bg_image.convert("RGBA"), subject_nobg)
+        if width / height > target_ratio:  # Image is too wide
+            new_width = int(height * target_ratio)
+            left = (width - new_width) // 2
+            final_image = final_image.crop((left, 0, left + new_width, height))
+        else:  # Image is too tall
+            new_height = int(width / target_ratio)
+            top = (height - new_height) // 2
+            final_image = final_image.crop((0, top, width, top + new_height))
         
-        # Return the result
+        # If the final image has an alpha channel, convert to RGB with white background
+        if final_image.mode == 'RGBA':
+            background = Image.new('RGB', final_image.size, (255, 255, 255))
+            background.paste(final_image, mask=final_image.split()[3])  # Use alpha channel as mask
+            final_image = background
+
         img_byte_arr = io.BytesIO()
-        final_image.save(img_byte_arr, format="PNG")
+        final_image.save(img_byte_arr, format="JPEG", quality=85, optimize=True)
         
         return Response(
             content=img_byte_arr.getvalue(), 
-            media_type="image/png",
+            media_type="image/jpeg",  # Change content type to JPEG
             headers={
                 "X-Content-Type-Options": "nosniff",
                 "Cache-Control": "no-store"
             }
         )
+        
     except HTTPException:
         raise
     except Exception as e:
-        # Log the error but don't expose details
         print(f"Error processing images: {str(e)}")
         raise HTTPException(status_code=500, detail="Error processing images")

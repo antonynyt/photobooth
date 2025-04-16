@@ -1,16 +1,9 @@
 import express from "express";
-import { Server } from "socket.io";
-import { createServer } from "http";
 
 import Image from "../models/image.js";
 import { VerifyKey } from "../utils/verifyKey.js";
 
 const router = express.Router();
-const app = express();
-const server = createServer(app); // Wrap app with HTTP server
-const io = new Server(server, { cors: { origin: "*" } });
-
-server.listen(4000, () => console.log("Server running on port 4000"));
 
 router.get("/:id", (req, res, next) => {
   const query = Image.findById(req.params.id)
@@ -44,13 +37,14 @@ router.post("/", VerifyKey(), (req, res, next) => {
   if (!image.boothID || !image.img) return res.status(400).send("Request body should contain boothID and img");
   image.save()
   .then(savedImage => {  
-    console.log("savedImage :", savedImage);
+    // console.log("savedImage :", savedImage);
     let binaryString = "";  
     for (let i = 0; i < savedImage.img.data; i++) {
       binaryString += String.fromCharCode(savedImage.img.data[i]);
     }
-    console.log("binaryString :", binaryString);
-    io.emit("newImage", savedImage); // Emit event when a new image is added
+    // console.log("binaryString :", binaryString);
+    req.app.get('io').emit("newImage", savedImage);
+    
     return res.status(201).send(savedImage);
   })
   .catch(next);
