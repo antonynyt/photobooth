@@ -1,8 +1,6 @@
-__pycache__
-venv
 .DS_Store
-api/*.png
-api/*.jpg
-# Local Netlify folder
-.netlify
 node_modules
+package-lock.json
+.env
+.netlify
+bun.lock
