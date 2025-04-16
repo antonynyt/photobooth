@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
-import TheHeader from '../components/TheHeader.vue';
 import Button from '../components/Button.vue';
 
 const { locale } = useI18n();
@@ -20,21 +19,20 @@ function selectLanguage(lang) {
     selectedLanguage.value = lang;
     locale.value = lang;
 
-    continueToOptin();
+    continueToCamera();
 }
 
-function continueToOptin() {
-    // You could store the selected language in localStorage or pass as route parameter
-    localStorage.setItem('userLanguage', selectedLanguage.value);
+function continueToCamera() {
     router.push('/camera');
 }
 </script>
 
 <template>
-    <div class="welcome-container">
+    <div class="welcome-container" @click="continueToCamera">
+        <div aria-hidden="true" class="bg"></div>
         <header>
-            <h1>#whynotyou</h1>
-            <h2>TAKE YOUR SHOT</h2>
+            <h1> Be part of a wall of portraits to support the cause WHYNOTYOU.</h1>
+            <h2>A thousand faces, one cause:<wbr> empowering women in coaching.</h2>
         </header>
         <div class="welcome-message">
             <div class="polaroid-container">
@@ -73,48 +71,47 @@ function continueToOptin() {
     }
 }
 
+.bg {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    width: 200%;
+    height: 100%;
+    background-color: var(--purple);
+    transform: rotate(-10deg);
+    z-index: -1;
+}
+
 header {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
 }
 
 h1 {
     font-family: 'Monument', sans-serif;
     font-weight: 700;
-    font-size: 2.5rem;
-    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    max-width: 600px;
     margin: 0;
     text-align: center;
-    color: #fff;
+    color: var(--yellow);
     text-transform: uppercase;
+    line-height: 120%;
 }
 
 h2 {
-    font-family: 'Monument', sans-serif;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.25rem;
     font-size: clamp(1rem, 2vw, 1.2rem);
     margin: 0;
     text-align: center;
-    margin-top: -1rem;
-    width: fit-content;
-    padding: 1.5rem 4rem;
-    color: var(--yellow);
-    position: relative;
-}
-
-h2::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--purple);
-    z-index: -1;
-    transform: rotate(2deg);
+    max-width: 350px;
+    color: #fff;
+    line-height: 120%;
 }
 
 .welcome-message {
@@ -133,8 +130,8 @@ h2::before {
 .polaroid-container img {
     position: absolute;
     transform: rotate(-2deg);
-    height: 50vh;
-    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
+    height: 45vh;
+    box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.3);
     margin: 1rem 0;
     transition: all 0.3s ease;
 }
@@ -161,6 +158,9 @@ h2::before {
 
 .language-selection {
     text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
 }
 
 .language-options {
@@ -194,8 +194,7 @@ h2::before {
 }
 
 .language-option.selected {
-    color: var(--purple);
-    font-weight: bold;
+    color: var(--orange);
 }
 
 .continue-button {

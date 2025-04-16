@@ -1,14 +1,16 @@
 {
     "title": "Photobooth",
-    "langSelection": "Please select your language to start",
+    "langSelection": "Please select your language",
     "shot": {
         "left": "shots left"
     },
     "slogan": "Lead your passion, shape the game.",
     "result": {
-        "title": "Your picture"
+        "title": "Your picture",
+        "cta": "Print & join the cause"
     },
-    "optin": "I accept the terms and conditions and the privacy policy.",
+    "optinTitle": "Join the cause!",
+    "optin": "I agree to have my picture added to the public mosaic and accept the Terms & Conditions.",
     "form": {
         "title": "Get my picture",
         "subtitle": "Please enter your email address to receive your picture",

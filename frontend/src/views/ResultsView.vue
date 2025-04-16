@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import Button from '../components/Button.vue';
 import ThePolaroid from '../components/ThePolaroid.vue';
 import { domToJpeg } from 'modern-screenshot';
-import { PrintingPage, Repeat } from '@iconoir/vue';
+import { Repeat } from '@iconoir/vue';
 import TheCheckbox from '../components/TheCheckbox.vue';
 import { generatedImage, photos } from '../stores/imageStore';
 
@@ -70,7 +70,34 @@ function handlePrint() {
         })
         .then(dataUrl => {
             generatedImage.value = dataUrl;
-            
+
+            // Get all individual image data URLs
+            const imageDataUrls = Array.from(polaroidElement.querySelectorAll('.result-image'))
+                .map(img => img.src);
+
+            // Send images to backend via Netlify function
+            fetch('/.netlify/functions/send-images', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    images: imageDataUrls
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API request failed: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log('Images sent successfully:', result);
+                })
+                .catch(error => {
+                    console.error('Error sending images to API:', error);
+                });
+
             // Trigger download
             const link = document.createElement('a');
             link.href = dataUrl;
@@ -111,20 +138,27 @@ function startOver() {
             <ThePolaroid :photos="photos" />
         </div>
 
-        <div class="optin">
-            <TheCheckbox @change="handleOptin" id="optin" name="optin" />
-            <label for="optin">{{ $t('optin') }}</label>
-        </div>
-
-        <div class="action-buttons">
-            <Button @click="startOver" class="start-over-button">
-                <Repeat width="30" height="30" />
-            </Button>
-
-            <Button @click="handlePrint" :disabled="printDisabled" class="print-button">
-                <PrintingPage width="30" height="30" />
-            </Button>
-
+        <div>
+            <div class="optin">
+                <h3>{{ $t('optinTitle') }}</h3>
+                <div class="optin-checkbox">
+                    <TheCheckbox @change="handleOptin" id="optin" name="optin" />
+                    <label for="optin">
+                        <p>{{ $t('optin') }}</p>
+                    </label>
+                </div>
+            </div>
+    
+            <div class="action-buttons">
+                <Button @click="startOver" class="start-over-button">
+                    <Repeat width="30" height="30" />
+                </Button>
+    
+                <Button @click="handlePrint" :disabled="printDisabled" class="print-button">
+                    {{ $t("result.cta") }}
+                </Button>
+    
+            </div>
         </div>
     </div>
 </template>
@@ -134,7 +168,7 @@ function startOver() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 2rem 1rem;
     box-sizing: border-box;
     height: 100svh;
@@ -182,7 +216,6 @@ h1::before {
 
 .polaroid-container {
     display: flex;
-    flex-grow: 1;
     justify-content: center;
     align-items: center;
     transform: rotate(-2deg);
@@ -203,10 +236,13 @@ h1::before {
 }
 
 .print-button {
-    background-color: var(--purple);
-    color: white;
+    background-color: var(--yellow);
+    color: #000;
     padding: 1rem 2rem;
     flex-grow: 1;
+    font-family: 'Monument', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
 }
 
 .start-over-button {
@@ -226,12 +262,24 @@ h1::before {
 
 .optin {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
+    flex-direction: column;
     gap: 0.5rem;
     line-height: 120%;
     max-width: 500px;
+}
+
+.optin-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.optin h3 {
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 0.5rem;
 }
 
 .animated {

@@ -1,0 +1,27 @@
+{
+    "title": "Cabina fotografica",
+    "langSelection": "Seleziona la tua lingua",
+    "shot": {
+        "left": "foto rimanenti"
+    },
+    "slogan": "Segui la tua passione, crea il gioco.",
+    "result": {
+        "title": "La tua foto",
+        "cta": "Stampa & unisciti al movimento"
+    }, 
+    "optinTitle": "Unisciti al movimento!",
+    "optin": "Accetto che la mia foto venga aggiunta al mosaico pubblico e accetto i Termini e Condizioni.",
+    "form": {
+        "title": "Ricevi la tua foto",
+        "subtitle": "Inserisci il tuo indirizzo e-mail per ricevere la tua foto.",
+        "getPictures": "Ricevi la mia foto",
+        "sending": "Invio...",
+        "error": "Per favore, inserisci un indirizzo e-mail valido.",
+        "skip": "Salta il passaggio",
+        "success": {
+            "title": "Foto inviata",
+            "subtitle": "Grazie per il tuo sorriso!",
+            "message": "Pronta a ispirare la prossima generazione di giocatrici? Fai il primo passo verso la licenza C."
+        }
+    }
+}

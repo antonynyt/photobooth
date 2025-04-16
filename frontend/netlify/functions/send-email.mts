@@ -2,7 +2,7 @@ import { Handler } from "@netlify/functions";
 import Mailgun from "mailgun.js";
 import formData from "form-data";
 import { parse } from "lambda-multipart-parser";
-import { getEmailTemplate } from "./email-template";
+import { getEmailTemplate } from "./shared/email-template.js";
 
 // Configure Mailgun with updated form-data
 const mailgun = new Mailgun(formData);
