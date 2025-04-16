@@ -3,7 +3,7 @@ import app from "../app.js"
 import mongoose from "mongoose"
 import Image from "../models/image.js";
 import cleanUpDB from "../utils/cleanupDB.js";
-import { key } from "../../config.js";
+import { key } from "../config.js";
 import bcrypt from "bcrypt";
 
 let hashedKey;
