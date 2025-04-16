@@ -1,18 +1,13 @@
 #!/usr/bin/env node
 
 import createDebugger from "debug";
-import http from "node:http";
+import { app, httpServer } from "../app.js";
 
-import app from "../app.js";
-
-const debug = createDebugger('whynotyou:server')
+const debug = createDebugger('api-storage:server')
 
 // Get port from environment and store in Express
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
-
-// Create HTTP server
-const httpServer = http.createServer(app);
 
 // Listen on provided port, on all network interfaces
 httpServer.listen(port);
@@ -60,4 +55,5 @@ function onHttpServerListening() {
   const addr = httpServer.address();
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
+  console.log(`API listening on ${bind}`);
 }

@@ -3,6 +3,8 @@ import createError from "http-errors";
 import logger from "morgan";
 import cors from "cors";
 import { key } from "./config.js";
+import http from "node:http";
+import { Server } from "socket.io";
 
 export const APIKey = key;
 
@@ -15,13 +17,25 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/');
 
 const app = express();
 
-//increase the limit of the request body to 10mb to allow blobs
+// Create HTTP server
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, { cors: { origin: "*" } });
+app.set('io', io);
+
+io.on('connection', (socket) => {
+  console.log('Socket.io client connected');
+  
+  socket.on('disconnect', () => {
+    console.log('Socket.io client disconnected');
+  });
+});
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 //cors
 const corsOptions = {
-  origin: 'https://whynotyou-frontend.onrender.com',
+  origin: process.env.ALLOWED_ORIGINS || "*",
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
@@ -50,4 +64,4 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-export default app;
+export { app, httpServer };
