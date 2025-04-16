@@ -113,13 +113,31 @@ async def replace_background(
             REMBG_MODEL
         )
 
-        # Save and return result
+        # Crop image to 3:4 aspect ratio
+        width, height = final_image.size
+        target_ratio = 3 / 4
+        
+        if width / height > target_ratio:  # Image is too wide
+            new_width = int(height * target_ratio)
+            left = (width - new_width) // 2
+            final_image = final_image.crop((left, 0, left + new_width, height))
+        else:  # Image is too tall
+            new_height = int(width / target_ratio)
+            top = (height - new_height) // 2
+            final_image = final_image.crop((0, top, width, top + new_height))
+        
+        # If the final image has an alpha channel, convert to RGB with white background
+        if final_image.mode == 'RGBA':
+            background = Image.new('RGB', final_image.size, (255, 255, 255))
+            background.paste(final_image, mask=final_image.split()[3])  # Use alpha channel as mask
+            final_image = background
+
         img_byte_arr = io.BytesIO()
-        final_image.save(img_byte_arr, format="PNG")
+        final_image.save(img_byte_arr, format="JPEG", quality=85, optimize=True)
         
         return Response(
             content=img_byte_arr.getvalue(), 
-            media_type="image/png",
+            media_type="image/jpeg",  # Change content type to JPEG
             headers={
                 "X-Content-Type-Options": "nosniff",
                 "Cache-Control": "no-store"
