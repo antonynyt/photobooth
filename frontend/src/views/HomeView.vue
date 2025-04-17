@@ -94,7 +94,7 @@ header {
 h1 {
     font-family: 'Monument', sans-serif;
     font-weight: 700;
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-size: clamp(1.1rem, 2.5vw, 2rem);
     max-width: 600px;
     margin: 0;
     text-align: center;
@@ -106,10 +106,10 @@ h1 {
 h2 {
     font-weight: 600;
     font-size: 1.25rem;
-    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
     margin: 0;
     text-align: center;
-    max-width: 350px;
+    max-width: 300px;
     color: #fff;
     line-height: 120%;
 }
@@ -169,7 +169,7 @@ h2 {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     width: 100%;
     max-width: 300px;
     color: #000;
